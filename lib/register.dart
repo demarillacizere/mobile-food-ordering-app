@@ -20,19 +20,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
   void _submitForm() {
-    // Handle form submission here
-    // ...
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
+          child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height,
+          ),
           child:Container(
       color: const Color(0xFFFFF7DD),
       child: Center(
         child:
-            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           Column(children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
@@ -125,11 +127,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           backgroundColor: MaterialStateProperty.all<Color>(
                               const Color.fromRGBO(254, 194, 43, 1)),
                         ),
-                    child: const Text('Submit'),
+                    child: const Text('Register'),
                   )),
 
                 Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              padding: const EdgeInsets.symmetric(vertical: 50.0),
               child: Image.asset(
                 'assets/images/or.png',
                 width: 289,
@@ -146,14 +148,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
 
-                ElevatedButton(
-                        style:  const ButtonStyle(
-                          
-                          
-                          
-                          
-                        ),
-                        onPressed: () {
+                GestureDetector(
+                        
+                        onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -162,12 +159,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: const Text("Already have an account? Login",
                             style:
                                 TextStyle(fontSize: 16, color: Colors.black))),
+                                const SizedBox(height: 50.0),
             ],
             ),
           ),
         ]),
       ),
-    )));
+    ))));
   }
 }
 
