@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/register.dart';
 
+import 'forgot_password.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -90,12 +92,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 const SizedBox(height: 10.0),
                                 Row(
-                                  children: const [
-                                    Text("Forgot Password",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
+                                  children: [
+                                    GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ForgotScreen()));
+                                    },
+                                    child: const Text(
+                                        "Forgot Password",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black))),
+                                ]),
                                 const SizedBox(height: 20.0),
                                 ElevatedButton(
                                   onPressed: _submitForm,
@@ -149,71 +160,5 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-
-
-
-
-
-        // body: Container(
-        //     color: const Color(0xFFFFF7DD),
-        //     child: Center(
-        //       child: Column(
-        //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //           children: [
-        //             Column(children: [
-        //               Padding(
-        //                 padding: const EdgeInsets.only(bottom: 16.0),
-        //                 child: Image.asset(
-        //                   'assets/images/user.png',
-        //                   width: 130,
-        //                   height: 130,
-        //                 ),
-        //               ),
-        //               const Text(
-        //                 'Welcome\nCreate an Account',
-        //                 textAlign: TextAlign.center,
-        //                 style: TextStyle(
-        //                     fontSize: 24,
-        //                     fontWeight: FontWeight.w600,
-        //                     color: Color.fromRGBO(254, 194, 43, 1)),
-        //               ),
-        //             ]),
-        //             Column(children: const [
-        //               Padding(
-        //                 padding: EdgeInsets.only(bottom: 16.0),
-        //                 child: Text(
-        //                   'Welcome',
-        //                   style: TextStyle(
-        //                     fontSize: 24,
-        //                     fontWeight: FontWeight.bold,
-        //                   ),
-        //                 ),
-        //               ),
-        //               Text(
-        //                 'We are excited to feed you\nShall we get started?',
-        //                 textAlign: TextAlign.center,
-        //               ),
-        //             ]),
-        //             ElevatedButton(
-        //                 style: ButtonStyle(
-        //                   minimumSize: MaterialStateProperty.all<Size>(
-        //                       const Size(250, 50)),
-        //                   backgroundColor: MaterialStateProperty.all<Color>(
-        //                       const Color.fromRGBO(254, 194, 43, 1)),
-        //                 ),
-        //                 onPressed: () {
-        //                   Navigator.push(
-        //                       context,
-        //                       MaterialPageRoute(
-        //                           builder: (context) => LoginScreen()));
-        //                 },
-        //                 child: const Text("GET STARTED",
-        //                     style:
-        //                         TextStyle(fontSize: 18, color: Colors.black))),
-        //           ]),
-        //     ))
-        // );
-//   }
-// }
 
 
