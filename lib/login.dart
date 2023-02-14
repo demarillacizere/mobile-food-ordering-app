@@ -24,6 +24,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color(0xFFFFF7DD),
+          foregroundColor: Colors.black,
+          elevation: 0.0,
+        ),
         body: SingleChildScrollView(
             child: ConstrainedBox(
                 constraints: BoxConstraints(
@@ -35,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 70.0),
+                          const SizedBox(height: 20.0),
                           Column(children: [
                             Padding(
                               padding: const EdgeInsets.only(bottom: 16.0),
@@ -54,13 +59,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: Color.fromRGBO(254, 194, 43, 1)),
                             ),
                           ]),
-                          Container(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 50.0),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 50.0),
-                                TextField(
+                          Column(
+                            children: [
+                              const SizedBox(height: 50.0),
+                              SizedBox(
+                                width: 310,
+                                child: TextField(
                                   controller: _emailController,
                                   decoration: const InputDecoration(
                                     hintText: 'Enter your email',
@@ -71,8 +75,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 20.0),
-                                TextField(
+                              ),
+                              const SizedBox(height: 20.0),
+                              SizedBox(
+                                width: 310,
+                                child: TextField(
                                   controller: _passwordController,
                                   decoration: InputDecoration(
                                     hintText: 'Enter your password',
@@ -90,10 +97,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   obscureText: _isHidden,
                                 ),
-                                const SizedBox(height: 10.0),
-                                Row(
-                                  children: [
-                                    GestureDetector(
+                              ),
+                              const SizedBox(height: 10.0),
+                              SizedBox(
+                                width: 310,
+                                child: GestureDetector(
                                     onTap: () {
                                       Navigator.push(
                                           context,
@@ -101,64 +109,60 @@ class _LoginScreenState extends State<LoginScreen> {
                                               builder: (context) =>
                                                   ForgotScreen()));
                                     },
-                                    child: const Text(
-                                        "Forgot Password",
+                                    child: const Text("Forgot Password",
                                         style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.black))),
-                                ]),
-                                const SizedBox(height: 20.0),
-                                ElevatedButton(
-                                  onPressed: _submitForm,
-                                  style: ButtonStyle(
-                                    minimumSize:
-                                        MaterialStateProperty.all<Size>(
-                                            const Size(310, 50)),
-                                    backgroundColor: MaterialStateProperty.all<
-                                            Color>(
-                                        const Color.fromRGBO(254, 194, 43, 1)),
-                                  ),
-                                  child: const Text('Login'),
+                              ),
+                              const SizedBox(height: 20.0),
+                              ElevatedButton(
+                                onPressed: _submitForm,
+                                style: ButtonStyle(
+                                  minimumSize: MaterialStateProperty.all<Size>(
+                                      const Size(310, 50)),
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      const Color.fromRGBO(254, 194, 43, 1)),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 50.0),
-                                  child: Image.asset(
-                                    'assets/images/or.png',
-                                    width: 289,
-                                    height: 19,
-                                  ),
+                                child: const Text(
+                                  'Login',
+                                  style: TextStyle(fontSize: 16),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 16.0),
-                                  child: Image.asset(
-                                    'assets/images/google.png',
-                                    width: 40,
-                                    height: 40,
-                                  ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 50.0),
+                                child: Image.asset(
+                                  'assets/images/or.png',
+                                  width: 289,
+                                  height: 19,
                                 ),
-                                GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  RegisterScreen()));
-                                    },
-                                    child: const Text(
-                                        "Don't have an account? Register",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black))),
-                                const SizedBox(height: 50.0),
-                              ],
-                            ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 16.0),
+                                child: Image.asset(
+                                  'assets/images/google.png',
+                                  width: 40,
+                                  height: 40,
+                                ),
+                              ),
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RegisterScreen()));
+                                  },
+                                  child: const Text(
+                                      "Don't have an account? Register",
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.black))),
+                              const SizedBox(height: 50.0),
+                            ],
                           ),
                         ]),
                   ),
                 ))));
   }
 }
-
-
-
