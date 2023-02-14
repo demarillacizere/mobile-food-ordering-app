@@ -1,16 +1,17 @@
-# food_app
+# Project Name
 
-A new Flutter project.
+Chap Chap Food App
 
-## Getting Started
+## Authors
 
-This project is a starting point for a Flutter application.
+Group 5:
 
-A few resources to get you started if this is your first Flutter project:
+* Demarillac Izere
+* Irene Busah
+* Mike Kiplangat
+## Current Pages
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* Landing Page
+* Registering Page
+* Login Page
+* Password Reset Page
