@@ -15,6 +15,9 @@ Group 5:
 * Registering Page
 * Login Page
 * Password Reset Page
+* Order Page
+* Notification Page
+* Home Page
 
 
 #### To navigate through the pages, simply click on the links that connect each page.
