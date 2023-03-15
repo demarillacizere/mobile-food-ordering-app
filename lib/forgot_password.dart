@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/register.dart';
+import 'package:food_app/src/authentication/screens/register.dart';
 
 class ForgotScreen extends StatefulWidget {
   @override

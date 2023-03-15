@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/register.dart';
+import 'package:food_app/src/authentication/screens/register.dart';
 
-import 'forgot_password.dart';
+import '../../../forgot_password.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

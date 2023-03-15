@@ -1,10 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:food_app/register.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:food_app/firebase_options.dart';
+import 'package:food_app/src/authentication/screens/register.dart';
+import 'package:food_app/src/repository/authentication_repository/authentication_repository.dart';
+import 'package:get/get.dart';
 
-Future main() async {
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
+      .then((value) => Get.put(AuthenticationRepository));
   await Firebase.initializeApp();
+  Get.put(AuthenticationRepository());
   runApp(const MyApp());
 }
 
@@ -19,19 +26,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           // primarySwatch: Color(0xFFfff7dd),
           ),
-      home: const MyHomePage(),
+      home: const MyLandingPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class MyLandingPage extends StatefulWidget {
+  const MyLandingPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyLandingPage> createState() => _MyLandingPage();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyLandingPage extends State<MyLandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
