@@ -1,44 +1,37 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:food_app/firebase_options.dart';
-import 'package:food_app/src/authentication/screens/register.dart';
-import 'package:food_app/src/repository/authentication_repository/authentication_repository.dart';
-import 'package:get/get.dart';
-
+import 'package:food_app/register.dart';
+import 'package:food_app/login.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
-      .then((value) => Get.put(AuthenticationRepository));
-  await Firebase.initializeApp();
-  Get.put(AuthenticationRepository());
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Chap Chap Delivery',
       theme: ThemeData(
           // primarySwatch: Color(0xFFfff7dd),
           ),
-      home: const MyLandingPage(),
+      home: const MyHomePage(),
     );
   }
 }
 
-class MyLandingPage extends StatefulWidget {
-  const MyLandingPage({super.key});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
 
   @override
-  State<MyLandingPage> createState() => _MyLandingPage();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyLandingPage extends State<MyLandingPage> {
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,7 +91,7 @@ class _MyLandingPage extends State<MyLandingPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => RegisterScreen()));
+                                  builder: (context) => const LoginScreen()));
                         },
                         child: const Text("GET STARTED",
                             style: TextStyle(

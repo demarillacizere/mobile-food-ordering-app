@@ -75,12 +75,12 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.only(right: 16.0),
             child: CircleAvatar(
               radius: 20.0, // adjust the radius according to your preference
-              backgroundImage: const AssetImage('../assets/images/profile.png'),
+              backgroundImage: const AssetImage('assets/images/profile.png'),
               child: Container(
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: AssetImage('../assets/images/profile.png'),
+                    image: AssetImage('assets/images/profile.png'),
                     fit: BoxFit.cover,
                   ),
                 ),

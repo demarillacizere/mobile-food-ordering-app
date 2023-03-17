@@ -4,12 +4,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 // import 'package:firebase_core/firebase_core.dart';
 
-void main() async {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   // This widget is the root of your application.
   @override
@@ -36,23 +32,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Container> _items = [
     Container(
-        color: Colors.yellow,
-        child: const Padding(
-          padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
-          child: Text('Food'),
-        )),
+      color: Colors.yellow,
+      // child: const Padding(
+      // padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
+      child: Text('Food'),
+    ),
     Container(
-        color: Colors.white,
-        child: const Padding(
-          padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
-          child: Text('Drinks'),
-        )),
+      color: Colors.white,
+      // child: const Padding(
+      //   padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
+      child: Text('Drinks'),
+    ),
     Container(
-        color: Colors.white,
-        child: const Padding(
-          padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
-          child: Text('Snacks'),
-        )),
+      color: Colors.white,
+      // child: const Padding(
+      //   padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
+      child: Text('Snacks'),
+    ),
   ];
 
   @override
@@ -75,12 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.only(right: 16.0),
             child: CircleAvatar(
               radius: 20.0, // adjust the radius according to your preference
-              backgroundImage: const AssetImage('../assets/images/profile.png'),
+              backgroundImage: const AssetImage('assets/images/profile.png'),
               child: Container(
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: AssetImage('../assets/images/profile.png'),
+                    image: AssetImage('assets/images/profile.png'),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -96,14 +92,13 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ListView(
             scrollDirection: Axis.vertical,
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Center(
-                    child: Text('Choose the Food you want to Order',
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(254, 194, 43, 1)))),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text('Choose the\nFood You Love',
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(254, 194, 43, 1))),
               ),
               CarouselSlider(
                 items: _items,
@@ -141,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     const Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Image(
-                        image: AssetImage('../assets/images/orderImage.png'),
+                        image: AssetImage('assets/images/orderImage.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -170,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     const Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Image(
-                        image: AssetImage('../assets/images/orderImage.png'),
+                        image: AssetImage('assets/images/orderImage.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -199,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     const Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Image(
-                        image: AssetImage('../assets/images/orderImage.png'),
+                        image: AssetImage('assets/images/orderImage.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -228,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     const Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Image(
-                        image: AssetImage('../assets/images/orderImage.png'),
+                        image: AssetImage('assets/images/orderImage.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -257,7 +252,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     const Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Image(
-                        image: AssetImage('../assets/images/orderImage.png'),
+                        image: AssetImage('assets/images/orderImage.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
