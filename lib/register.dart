@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   bool _isHidden = true;
-  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _secondNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -38,6 +40,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
     await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim());
+    addUserDetails(
+      _firstNameController.text.trim(),
+      _secondNameController.text.trim(),
+      _emailController.text.trim(),
+      _passwordController.text.trim(),
+    );
+  }
+
+  Future addUserDetails(String firstName, String secondName, String email,
+      String password) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'firstName': firstName,
+      'secondName': secondName,
+      'email': email,
+      'password': password,
+    });
   }
 
   Widget build(BuildContext context) {
@@ -81,9 +99,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               SizedBox(
                                 width: 310,
                                 child: TextField(
-                                  controller: _fullNameController,
+                                  controller: _firstNameController,
                                   decoration: const InputDecoration(
-                                    hintText: 'Enter your full name',
+                                    hintText: 'Enter first name',
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color:
+                                              Color.fromRGBO(254, 194, 43, 1)),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 20.0),
+                              SizedBox(
+                                width: 310,
+                                child: TextField(
+                                  controller: _secondNameController,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Enter second name',
                                     border: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color:

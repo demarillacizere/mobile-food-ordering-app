@@ -32,22 +32,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Container> _items = [
     Container(
+      height: 40.0,
+      width: 80.0,
       color: Colors.yellow,
       // child: const Padding(
       // padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
-      child: Text('Food'),
+      child: Center(child: Text('Food')),
     ),
     Container(
-      color: Colors.white,
+      height: 40.0,
+      width: 80.0,
+      color: Colors.yellow,
       // child: const Padding(
-      //   padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
-      child: Text('Drinks'),
+      // padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
+      child: Center(child: Text('Drinks')),
     ),
     Container(
-      color: Colors.white,
+      height: 40.0,
+      width: 80.0,
+      color: Colors.yellow,
       // child: const Padding(
-      //   padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
-      child: Text('Snacks'),
+      // padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
+      child: Center(child: Text('Snacks')),
     ),
   ];
 
