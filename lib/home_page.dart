@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/order_page.dart';
 import 'package:food_app/search_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'settings.dart';
@@ -311,6 +312,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => const NotificationPage()));
+              break;
+            case 1:
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const MyOrderPage()));
               break;
           }
         },

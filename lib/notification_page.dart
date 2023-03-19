@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/order_page.dart';
 import 'package:food_app/search_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'home_page.dart';
@@ -208,7 +209,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
@@ -236,14 +237,14 @@ class _NotificationPageState extends State<NotificationPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
                           Text('Divine',
                               style: TextStyle(
                                   fontSize: 18.0, fontWeight: FontWeight.bold)),
-                          Text("Your order has been taken by the vendor"),
+                          Text("Your order has been taken"),
                         ],
                       ),
                     ),
@@ -264,7 +265,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
@@ -292,7 +293,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
@@ -320,7 +321,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
@@ -346,6 +347,10 @@ class _NotificationPageState extends State<NotificationPage> {
             case 0:
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const HomePage()));
+              break;
+            case 1:
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const MyOrderPage()));
               break;
             case 3:
               Navigator.push(

@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/home_page.dart';
 import 'package:food_app/search_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:food_app/settings.dart';
 
-// import 'package:firebase_core/firebase_core.dart';
+import 'notification_page.dart';
 
+// import 'package:firebase_core/firebase_core.dart
 void main() async {
-  runApp(const MyApp());
+  runApp(const OrderPage());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class OrderPage extends StatelessWidget {
+  const OrderPage({super.key});
 
   // This widget is the root of your application.
   @override
@@ -19,40 +22,46 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           // primarySwatch: Color(0xFFfff7dd),
           ),
-      home: const MyHomePage(),
+      home: const MyOrderPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class MyOrderPage extends StatefulWidget {
+  const MyOrderPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyOrderPage> createState() => _MyOrderPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyOrderPageState extends State<MyOrderPage> {
   int _selectedIndex = 0;
 
   final List<Container> _items = [
     Container(
-        color: Colors.yellow,
-        child: const Padding(
-          padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
-          child: Text('Food'),
-        )),
+      height: 40.0,
+      width: 80.0,
+      color: Colors.yellow,
+      // child: const Padding(
+      // padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
+      child: const Center(child: Text('Food')),
+    ),
     Container(
-        color: Colors.white,
-        child: const Padding(
-          padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
-          child: Text('Drinks'),
-        )),
+      height: 40.0,
+      width: 80.0,
+      color: Colors.yellow,
+      // child: const Padding(
+      // padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
+      child: const Center(child: Text('Drinks')),
+    ),
     Container(
-        color: Colors.white,
-        child: const Padding(
-          padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
-          child: Text('Snacks'),
-        )),
+      height: 40.0,
+      width: 80.0,
+      color: Colors.yellow,
+      // child: const Padding(
+      // padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
+      child: const Center(child: Text('Snacks')),
+    ),
   ];
 
   @override
@@ -143,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
@@ -211,7 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
@@ -279,7 +288,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
@@ -347,7 +356,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
@@ -413,11 +422,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
-                          Text('Chicken Wrap',
+                          Text('Chicken',
                               style: TextStyle(
                                   fontSize: 18.0, fontWeight: FontWeight.bold)),
                           Text('Rwf 1500'),
@@ -487,6 +496,26 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        onTap: (int index) {
+          switch (index) {
+            case 0:
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const MyHomePage()));
+              break;
+            case 3:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AccountSettingPage()));
+              break;
+            case 2:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationPage()));
+              break;
+          }
+        },
         backgroundColor: Colors.blue,
         items: const [
           BottomNavigationBarItem(
@@ -506,12 +535,12 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Settings',
           ),
         ],
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
+        // currentIndex: _selectedIndex,
+        // onTap: (index) {
+        //   setState(() {
+        //     _selectedIndex = index;
+        //   });
+        // },
       ),
     );
   }
