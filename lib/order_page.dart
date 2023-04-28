@@ -5,11 +5,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 // import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
-  runApp(const MyApp());
+  runApp(const OrderPage());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class OrderPage extends StatelessWidget {
+  const OrderPage({super.key});
 
   // This widget is the root of your application.
   @override
@@ -19,20 +19,25 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           // primarySwatch: Color(0xFFfff7dd),
           ),
-      home: const MyHomePage(),
+      home: const MyOrderPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class MyOrderPage extends StatefulWidget {
+  const MyOrderPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyOrderPageState createState() => _MyOrderPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyOrderPageState extends State<MyOrderPage> {
   int _selectedIndex = 0;
+  int _count = 1;
+  int _count2 = 0;
+  int _count3 = 0;
+  int _count4 = 0;
+  int _count5 = 0;
 
   final List<Container> _items = [
     Container(
@@ -143,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(5.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
@@ -163,22 +168,31 @@ class _MyHomePageState extends State<MyHomePage> {
                             radius: 15.0,
                             backgroundColor: Colors.grey[300],
                             child: IconButton(
-                              icon: const Icon(Icons.add, size: 15.0),
+                              icon: const Icon(Icons.remove, size: 15.0),
                               onPressed: () {
-                                // Add functionality goes here
+                                setState(() {
+                                  if (_count <= 0) {
+                                    _count = 0;
+                                  } else {
+                                    _count--;
+                                  }
+                                });
                               },
                             ),
                           ),
                           const SizedBox(width: 10.0),
-                          const Text("2", style: TextStyle(fontSize: 18.0)),
+                          Text('$_count',
+                              style: const TextStyle(fontSize: 18.0)),
                           const SizedBox(width: 10.0),
                           CircleAvatar(
                             radius: 15.0,
                             backgroundColor: Colors.grey[300],
                             child: IconButton(
-                              icon: const Icon(Icons.remove, size: 15.0),
+                              icon: const Icon(Icons.add, size: 15.0),
                               onPressed: () {
-                                // Add functionality goes here
+                                setState(() {                         
+                                    _count++;
+                                });
                               },
                             ),
                           ),
@@ -189,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       icon: const Icon(Icons.delete),
                       color: Colors.red,
                       onPressed: () {
-                        // Delete functionality goes here
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],
@@ -211,7 +225,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(5.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
@@ -231,22 +245,31 @@ class _MyHomePageState extends State<MyHomePage> {
                             radius: 15.0,
                             backgroundColor: Colors.grey[300],
                             child: IconButton(
-                              icon: const Icon(Icons.add, size: 15.0),
+                              icon: const Icon(Icons.remove, size: 15.0),
                               onPressed: () {
-                                // Add functionality goes here
+                                setState(() {
+                                  if (_count2 <= 0) {
+                                    _count2 = 0;
+                                  } else {
+                                    _count2--;
+                                  }
+                                });
                               },
                             ),
                           ),
                           const SizedBox(width: 10.0),
-                          const Text("2", style: TextStyle(fontSize: 18.0)),
+                          Text('$_count2',
+                              style: const TextStyle(fontSize: 18.0)),
                           const SizedBox(width: 10.0),
                           CircleAvatar(
                             radius: 15.0,
                             backgroundColor: Colors.grey[300],
                             child: IconButton(
-                              icon: const Icon(Icons.remove, size: 15.0),
+                              icon: const Icon(Icons.add, size: 15.0),
                               onPressed: () {
-                                // Add functionality goes here
+                                setState(() {
+                                  _count2++;
+                                });
                               },
                             ),
                           ),
@@ -279,7 +302,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(5.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
@@ -299,22 +322,31 @@ class _MyHomePageState extends State<MyHomePage> {
                             radius: 15.0,
                             backgroundColor: Colors.grey[300],
                             child: IconButton(
-                              icon: const Icon(Icons.add, size: 15.0),
+                              icon: const Icon(Icons.remove, size: 15.0),
                               onPressed: () {
-                                // Add functionality goes here
+                                setState(() {
+                                  if (_count3 <= 0) {
+                                    _count3 = 0;
+                                  } else {
+                                    _count3--;
+                                  }
+                                });
                               },
                             ),
                           ),
                           const SizedBox(width: 10.0),
-                          const Text("2", style: TextStyle(fontSize: 18.0)),
+                          Text('$_count3',
+                              style: const TextStyle(fontSize: 18.0)),
                           const SizedBox(width: 10.0),
                           CircleAvatar(
                             radius: 15.0,
                             backgroundColor: Colors.grey[300],
                             child: IconButton(
-                              icon: const Icon(Icons.remove, size: 15.0),
+                              icon: const Icon(Icons.add, size: 15.0),
                               onPressed: () {
-                                // Add functionality goes here
+                                setState(() {
+                                  _count3++;
+                                });
                               },
                             ),
                           ),
@@ -347,7 +379,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(5.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
@@ -367,21 +399,32 @@ class _MyHomePageState extends State<MyHomePage> {
                             radius: 15.0,
                             backgroundColor: Colors.grey[300],
                             child: IconButton(
-                              icon: const Icon(Icons.add, size: 15.0),
+                              icon: const Icon(Icons.remove, size: 15.0),
                               onPressed: () {
-                                // Add functionality goes here
+                                setState(() {
+                                  if (_count4 <= 0) {
+                                    _count4 = 0;
+                                  } else {
+                                    _count4--;
+                                  }
+                                });
                               },
                             ),
                           ),
                           const SizedBox(width: 10.0),
-                          const Text("2", style: TextStyle(fontSize: 18.0)),
+                          Text('$_count4',
+                              style: const TextStyle(fontSize: 18.0)),
                           const SizedBox(width: 10.0),
                           CircleAvatar(
                             radius: 15.0,
                             backgroundColor: Colors.grey[300],
                             child: IconButton(
-                              icon: const Icon(Icons.remove, size: 15.0),
-                              onPressed: () {},
+                              icon: const Icon(Icons.add, size: 15.0),
+                              onPressed: () {
+                                setState(() {
+                                  _count4++;
+                                });
+                              },
                             ),
                           ),
                         ],
@@ -413,7 +456,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(5.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
@@ -433,22 +476,31 @@ class _MyHomePageState extends State<MyHomePage> {
                             radius: 15.0,
                             backgroundColor: Colors.grey[300],
                             child: IconButton(
-                              icon: const Icon(Icons.add, size: 15.0),
+                              icon: const Icon(Icons.remove, size: 15.0),
                               onPressed: () {
-                                // Add functionality goes here
+                                setState(() {
+                                  if (_count5 <= 0) {
+                                    _count5 = 0;
+                                  } else {
+                                    _count5--;
+                                  }
+                                });
                               },
                             ),
                           ),
                           const SizedBox(width: 10.0),
-                          const Text("2", style: TextStyle(fontSize: 18.0)),
+                          Text('$_count5',
+                              style: const TextStyle(fontSize: 18.0)),
                           const SizedBox(width: 10.0),
                           CircleAvatar(
                             radius: 15.0,
                             backgroundColor: Colors.grey[300],
                             child: IconButton(
-                              icon: const Icon(Icons.remove, size: 15.0),
+                              icon: const Icon(Icons.add, size: 15.0),
                               onPressed: () {
-                                // Add functionality goes here
+                                setState(() {
+                                  _count5++;
+                                });
                               },
                             ),
                           ),

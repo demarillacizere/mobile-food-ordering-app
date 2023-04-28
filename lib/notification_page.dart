@@ -196,7 +196,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
