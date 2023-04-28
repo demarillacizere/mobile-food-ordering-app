@@ -1,24 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'firebase_options.dart';
+// import 'firebase_options.dart';
 import 'package:food_app/src/authentication/screens/register.dart';
 import 'package:food_app/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:get/get.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
-  //     .then((value) => Get.put(AuthenticationRepository));
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  Get.put(AuthenticationRepository());
-  runApp(const MyApp());
+void main() {
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
+  Future<FirebaseApp> _initializeFirebase() async {
+    FirebaseApp firebaseApp = await Firebase.initializeApp();
+    return firebaseApp;
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
