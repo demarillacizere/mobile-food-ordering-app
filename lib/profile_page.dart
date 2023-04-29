@@ -67,7 +67,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MyHomePage()),
+                MaterialPageRoute(builder: (context) =>  MyHomePage()),
               );
             },
             backgroundColor: Colors.yellow,
@@ -171,7 +171,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             switch (index) {
               case 0:
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const HomePage()));
+                    MaterialPageRoute(builder: (context) => MyHomePage()));
                 break;
               case 3:
                 Navigator.push(

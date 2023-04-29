@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
 }
 
 final Map<String, WidgetBuilder> routes = {
-  '/home': (BuildContext context) => HomePage(),
+  '/home': (BuildContext context) => MyHomePage(),
   // '/settings': (BuildContext context) => AccountSettingPage(),
 };
 
@@ -237,7 +237,7 @@ class _AccountSettingPageState extends State<AccountSettingPage> {
             switch (index) {
               case 0:
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const HomePage()));
+                    MaterialPageRoute(builder: (context) => MyHomePage()));
                 break;
               case 1:
                 Navigator.push(

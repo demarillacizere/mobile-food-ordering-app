@@ -346,7 +346,7 @@ class _NotificationPageState extends State<NotificationPage> {
           switch (index) {
             case 0:
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const HomePage()));
+                  MaterialPageRoute(builder: (context) => MyHomePage()));
               break;
             case 1:
               Navigator.push(context,

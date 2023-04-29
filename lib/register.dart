@@ -193,7 +193,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const HomePage()));
+                                              MyHomePage()));
                                 },
                                 style: ButtonStyle(
                                   minimumSize: MaterialStateProperty.all<Size>(
