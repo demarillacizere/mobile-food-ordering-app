@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:food_app/screens/home/widget/food_list.dart';
 import 'package:food_app/screens/home/widget/food_list_view.dart';
+import 'package:food_app/screens/home/widget/menu.dart';
 import 'package:food_app/screens/home/widget/restaurant_info.dart';
 import 'package:food_app/screens/home/widget/restaurant_list_view.dart';
 
@@ -10,14 +11,19 @@ import '../../models/restaurants.dart';
 import '../../widgets/custom_app_bar.dart';
 
 class HomePage extends StatefulWidget {
+  final Restaurant restaurant;
+
+  const HomePage({Key? key, required this.restaurant}) : super(key: key);
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   var selected = 0;
+  var inde = 0;
   final pageController = PageController();
   final restaurant = Restaurant.generateRestaurant();
+  final restaurants = Restaurant.generateRestaurant();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +32,15 @@ class _HomePageState extends State<HomePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomAppBar(Icons.arrow_back_ios_new_outlined, Icons.notifications,
-            () => Navigator.pop(context)),
+            () => Navigator.pop(context), itemBuilder: (context, index) {
+                  return Card(
+                    margin: EdgeInsets.only(right: 10),
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundImage: AssetImage('assets/images/profile.png'),
+                    ),
+                  );
+                }, ),
         const SizedBox(
           height: 10,
         ),
@@ -65,7 +79,7 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(
           height: 20,
         ),
-        RestaurantInfo(),
+        // RestaurantInfo(restaurant: restaurant),
         FoodList(selected, (index) {
           setState(() {
             selected = index;
@@ -73,7 +87,7 @@ class _HomePageState extends State<HomePage> {
           pageController.animateToPage(index,
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeIn);
-        }, restaurant[selected]),
+        }, restaurants[selected]),
         Expanded(child: FoodListView(
           selected, 
           (int index) {
@@ -82,10 +96,11 @@ class _HomePageState extends State<HomePage> {
             });
           },
           pageController,
-          restaurant[selected],
+          restaurants[selected],
           
         )
         ),
+        // Expanded(child: MenuScreen(restaurant: restaurant,))
       ],
     ));
   }

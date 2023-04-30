@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/src/material/card.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
@@ -6,7 +7,7 @@ class CustomAppBar extends StatelessWidget {
   final IconData leftIcon;
   final IconData rightIcon;
   final Function? leftCallBack;
-  CustomAppBar(this.leftIcon, this.rightIcon, this.leftCallBack);
+  CustomAppBar(this.leftIcon, this.rightIcon, this.leftCallBack, {required Card Function(BuildContext context, int index) itemBuilder});
   @override
   Widget build(BuildContext context) {
     return Container(

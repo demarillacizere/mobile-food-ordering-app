@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:food_app/models/restaurants.dart';
 
 class RestaurantInfo extends StatelessWidget {
-  final restaurant = Restaurant.generateRestaurant();
+  // final restaurant = Restaurant.generateRestaurant();
+  final Restaurant restaurant;
+
+  const RestaurantInfo({Key? key, required this.restaurant}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class RestaurantInfo extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  restaurant[0].name,
+                  restaurant.name,
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -30,7 +33,7 @@ class RestaurantInfo extends StatelessWidget {
                       color: Colors.yellow,
                     ),
                     Text(
-                      restaurant[0].score.toString(),
+                      restaurant.score.toString(),
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
