@@ -275,6 +275,8 @@ import 'package:food_app/models/restaurants.dart';
 import 'package:food_app/screens/home/home.dart';
 import 'package:food_app/screens/home/widget/menu.dart';
 import 'package:food_app/screens/home/widget/restaurant_info.dart';
+import 'package:food_app/screens/home/widget/restaurant_item.dart';
+import 'package:food_app/screens/home/widget/restaurant_list_view.dart';
 import 'package:food_app/settings.dart';
 import 'package:food_app/widgets/custom_app_bar.dart';
 
@@ -301,6 +303,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: const Color(0xFFFFF7DD),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomAppBar(
             Icons.arrow_back_ios_new_outlined,
@@ -317,7 +320,7 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
           const Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.fromLTRB(15, 16, 8, 0),
             child: Text('Choose the\nFood You Love',
                 style: TextStyle(
                     fontSize: 30.0,
@@ -330,7 +333,12 @@ class _MyHomePageState extends State<MyHomePage> {
               itemBuilder: (BuildContext context, int index) {
                 final restaurant = restaurants[index];
                 return Card(
+                  margin: const EdgeInsets.fromLTRB(15, 0, 15, 10),
                   child: ListTile(
+                    leading: Image(
+                      image: AssetImage('assets/images/orderImage.png'),
+                      fit: BoxFit.cover,
+                    ),
                     title: Text(restaurant.name),
                     subtitle: Text(restaurant.label),
                     trailing: Icon(Icons.keyboard_arrow_right),
@@ -339,7 +347,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              MenuScreen(restaurant: restaurant),
+                              HomePage(restaurant: restaurant),
                         ),
                       );
                     },
@@ -349,54 +357,53 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ],
-      ),bottomNavigationBar:
-    BottomNavigationBar(
-      onTap: (int index) {
-        switch (index) {
-          case 3:
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const AccountSettingPage()));
-            break;
-          case 2:
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const NotificationPage()));
-            break;
-          case 1:
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const MyOrderPage()));
-            break;
-        }
-      },
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home, color: Colors.black),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart, color: Colors.black),
-          label: 'Shopping Cart',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.notifications, color: Colors.black),
-          label: 'Notifications',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings, color: Colors.black),
-          label: 'Settings',
-        ),
-      ],
-      // currentIndex: _selectedIndex,
-      // onTap: (index) {
-      //   setState(() {
-      //     _selectedIndex = index;
-      //   });
-      // },
-    ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (int index) {
+          switch (index) {
+            case 3:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AccountSettingPage()));
+              break;
+            case 2:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationPage()));
+              break;
+            case 1:
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const MyOrderPage()));
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, color: Colors.black),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart, color: Colors.black),
+            label: 'Shopping Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications, color: Colors.black),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings, color: Colors.black),
+            label: 'Settings',
+          ),
+        ],
+        // currentIndex: _selectedIndex,
+        // onTap: (index) {
+        //   setState(() {
+        //     _selectedIndex = index;
+        //   });
+        // },
+      ),
     );
-    
   }
 }

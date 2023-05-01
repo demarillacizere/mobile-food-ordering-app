@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/cart_page.dart';
+import 'package:food_app/home_page.dart';
 import 'package:food_app/models/food.dart';
 import 'package:food_app/models/restaurants.dart';
+import 'package:food_app/order_page.dart';
 import 'package:food_app/screens/home/widget/restaurant_info.dart';
 
+import '../../../notification_page.dart';
+import '../../../settings.dart';
 import '../../../widgets/custom_app_bar.dart';
 import 'food_list.dart';
 import 'food_list_view.dart';
@@ -50,126 +55,57 @@ class _MenuScreenState extends State<MenuScreen> {
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeIn);
         }, widget.restaurant),
-        // Expanded(child: FoodListView(
-        //   selected, 
-        //   (int index) {
-        //     setState(() {
-        //       selected = index;
-        //     });
-        //   },
-        //   pageController,
-        //   widget.restaurant
-          
-        //   )
-        // ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: widget.restaurant.menu.length,
-              itemBuilder: (BuildContext context, int index) {
-                final category = widget.restaurant.menu.keys.elementAt(index);
-                final items = widget.restaurant.menu[category]!;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        category,
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ),
-                    Divider(),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: items.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final item = items[index];
-                        return Container(
-                          child: Card(
-                            color: Colors.white,
-                            elevation: 8.0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: Row(
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Image(
-                                    image: AssetImage('assets/images/orderImage.png'),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(item.name,
-                                          style: TextStyle(
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.bold)),
-                                      Text(
-                                        item.price.toString() + " Rwf",
-                                        style: TextStyle(fontSize: 14.0),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                const Spacer(),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 15.0,
-                                        backgroundColor: Colors.grey[300],
-                                        child: IconButton(
-                                          icon: const Icon(Icons.add, size: 15.0),
-                                          onPressed: () {
-                                            // Add functionality goes here
-                                          },
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10.0),
-                                      const Text("2",
-                                          style: TextStyle(fontSize: 18.0)),
-                                      const SizedBox(width: 10.0),
-                                      CircleAvatar(
-                                        radius: 15.0,
-                                        backgroundColor: Colors.grey[300],
-                                        child: IconButton(
-                                          icon: const Icon(Icons.remove, size: 15.0),
-                                          onPressed: () {
-                                            // Add functionality goes here
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.delete),
-                                  color: Colors.red,
-                                  onPressed: () {
-                                    // Delete functionality goes here
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                );
-              },
-            ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (int index) {
+          switch (index) {
+            case 3:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AccountSettingPage()));
+              break;
+            case 2:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationPage()));
+              break;
+            case 1:
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()));
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, color: Colors.black),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart, color: Colors.black),
+            label: 'Shopping Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications, color: Colors.black),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings, color: Colors.black),
+            label: 'Settings',
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CartPage(addToCart: (Food ) {  }, cartItems: [],   ) ));
+        },
+        backgroundColor: Colors.red,
+        child: Icon(Icons.shopping_cart),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    
     );
   }
 }

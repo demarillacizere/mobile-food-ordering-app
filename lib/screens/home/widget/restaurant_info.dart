@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/src/widgets/framework.dart';
-// import 'package:flutter/src/widgets/placeholder.dart';
-
 import 'package:food_app/models/restaurants.dart';
 
 class RestaurantInfo extends StatelessWidget {
-  // final restaurant = Restaurant.generateRestaurant();
   final Restaurant restaurant;
 
   const RestaurantInfo({Key? key, required this.restaurant}) : super(key: key);

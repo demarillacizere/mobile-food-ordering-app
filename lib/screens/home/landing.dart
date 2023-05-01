@@ -73,7 +73,7 @@ class _LandingPageState extends State<LandingPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MyHomePage()));
+                                  builder: (context) => LoginScreen()));
                         },
                         child: const Text("GET STARTED",
                             style: TextStyle(

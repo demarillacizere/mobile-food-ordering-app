@@ -7,7 +7,11 @@ import 'package:food_app/screens/home/widget/menu.dart';
 import 'package:food_app/screens/home/widget/restaurant_info.dart';
 import 'package:food_app/screens/home/widget/restaurant_list_view.dart';
 
+import '../../home_page.dart';
 import '../../models/restaurants.dart';
+import '../../notification_page.dart';
+import '../../order_page.dart';
+import '../../settings.dart';
 import '../../widgets/custom_app_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -79,7 +83,7 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(
           height: 20,
         ),
-        // RestaurantInfo(restaurant: restaurant),
+        RestaurantInfo(restaurant: widget.restaurant),
         FoodList(selected, (index) {
           setState(() {
             selected = index;
@@ -102,6 +106,61 @@ class _HomePageState extends State<HomePage> {
         ),
         // Expanded(child: MenuScreen(restaurant: restaurant,))
       ],
-    ));
+    ),
+    bottomNavigationBar: BottomNavigationBar(
+        onTap: (int index) {
+          switch (index) {
+            case 3:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AccountSettingPage()));
+              break;
+            case 2:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationPage()));
+              break;
+            case 1:
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()));
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, color: Colors.black),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart, color: Colors.black),
+            label: 'Shopping Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications, color: Colors.black),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings, color: Colors.black),
+            label: 'Settings',
+          ),
+        ],
+        // currentIndex: _selectedIndex,
+        // onTap: (index) {
+        //   setState(() {
+        //     _selectedIndex = index;
+        //   });
+        // },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => OrderPage()));
+        },
+        backgroundColor: Color.fromRGBO(254, 194, 43, 1),
+        child: Icon(Icons.shopping_cart),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
   }
 }
