@@ -5,6 +5,11 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:food_app/screens/home/widget/restaurant_info.dart';
 
 import '../../cart_page.dart';
+import '../../cart_provider.dart';
+import '../../home_page.dart';
+import '../../notification_page.dart';
+import '../../settings.dart';
+import '../../widgets/custom_app_bar.dart';
 import 'food_details_page.dart';
 
 class RestaurantDetail extends StatefulWidget {
@@ -44,13 +49,29 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Restaurant Details'),
-      ),
+      backgroundColor: const Color(0xFFFFF7DD),
       body: Column(
         children: [
-          RestaurantInfo(restaurant: widget.restId, score: '3', ),
-
+          SizedBox(height: 10),
+          CustomAppBar(
+            Icons.arrow_back_ios_new_outlined,
+            Icons.notifications,
+            () => Navigator.pop(context),
+            itemBuilder: (context, index) {
+              return const Card(
+                margin: EdgeInsets.only(right: 10),
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: AssetImage('assets/images/profile.png'),
+                ),
+              );
+            },
+          ),
+          SizedBox(height: 10),
+          RestaurantInfo(
+            restaurant: widget.restId,
+            score: '3',
+          ),
           FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance
                 .collection('restaurant')
@@ -66,12 +87,18 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
                     return GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => FoodDetailsPage(
-                food: snapshot.data!['menu2'][index]['name'],
-                floatingActionButton: CartFloatingActionButton(
-                    onPressed: () => CartPage(
-                          foodDetails: {},
-                        )), description: snapshot.data!['menu2'][index]['description'], price: snapshot.data!['menu2'][index]['price'],)));
+                            builder: (context) => FoodDetailsPage(
+                                  food: snapshot.data!['menu2'][index]['name'],
+                                  floatingActionButton:
+                                      CartFloatingActionButton(
+                                          onPressed: () => CartPage(
+                                               
+                                              )),
+                                  description: snapshot.data!['menu2'][index]
+                                      ['description'],
+                                  price: snapshot.data!['menu2'][index]
+                                      ['price'],
+                                )));
                       },
                       child: ListTile(
                         leading: Container(
@@ -89,8 +116,8 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
                           ),
                         ),
                         title: Text(snapshot.data!['menu2'][index]['name']),
-                        subtitle: Text(
-                            snapshot.data!['menu2'][index]['description']),
+                        subtitle:
+                            Text(snapshot.data!['menu2'][index]['description']),
                         // trailing: Container(
                         //   height: 60,
                         //   width: 60,
@@ -112,98 +139,7 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
                         // ),
                       ),
                     );
-                    GestureDetector(
-      onTap: () {
-        // Navigator.of(context).push(MaterialPageRoute(
-        //     builder: (context) => FoodDetailsPage(
-        //         food: widget.food,
-        //         floatingActionButton: CartFloatingActionButton(
-        //             onPressed: () => CartPage(
-        //                   foodDetails: {},
-        //                 )))));
-      },
-      child: Card(
-        color: Colors.white,
-        elevation: 8.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Row(
-          children: [
-            const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Image(
-            image: AssetImage('assets/images/orderImage.png'),
-            fit: BoxFit.cover,
-          ),
-            ),
-            Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(snapshot.data!['menu2'][index]['name'],
-                  style: TextStyle(
-                      fontSize: 18.0, fontWeight: FontWeight.bold)),
-              Text(
-                snapshot.data!['menu2'][index]['price'] + " Rwf",
-                style: TextStyle(fontSize: 14.0),
-              )
-            ],
-          ),
-            ),
-            const Spacer(),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Row(
-            //     children: [
-            //       CircleAvatar(
-            //         radius: 15.0,
-            //         backgroundColor: Colors.grey[300],
-            //         child: IconButton(
-            //           icon: const Icon(Icons.remove, size: 15.0),
-            //           onPressed: () {
-            //             setState(() {
-            //               if (_count <= 0) {
-            //                 _count = 0;
-            //               } else {
-            //                 _count--;
-            //               }
-            //               // widget.onCountChanged(widget.food.name, _count);
-            //             });
-            //           },
-            //         ),
-            //       ),
-            //       const SizedBox(width: 10.0),
-            //       Text(_count.toString(), style: TextStyle(fontSize: 18.0)),
-            //       const SizedBox(width: 10.0),
-            //       CircleAvatar(
-            //         radius: 15.0,
-            //         backgroundColor: Colors.grey[300],
-            //         child: IconButton(
-            //           icon: const Icon(Icons.add, size: 15.0),
-            //           onPressed: () {
-            //             setState(() {
-            //               _count++;
-            //               // widget.onCountChanged(widget.food.name, _count);
-            //             });
-            //           },
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // IconButton(
-            //   icon: const Icon(Icons.delete),
-            //   color: Colors.red,
-            //   onPressed: () {
-            //     // Delete functionality goes here
-            //   },
-            // ),
-          ],
-        ),
-      ),
-    );
+                    
                   },
                   separatorBuilder: (context, index) {
                     return const Divider(
@@ -221,6 +157,53 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
           ),
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+          onTap: (int index) {
+            switch (index) {
+              case 3:
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AccountSettingPage()));
+                break;
+              case 2:
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NotificationPage()));
+                break;
+              case 1:
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyHomePage()));
+                break;
+            }
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home, color: Colors.black),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart, color: Colors.black),
+              label: 'Shopping Cart',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications, color: Colors.black),
+              label: 'Notifications',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings, color: Colors.black),
+              label: 'Settings',
+            ),
+          ],
+          // currentIndex: _selectedIndex,
+          // onTap: (index) {
+          //   setState(() {
+          //     _selectedIndex = index;
+          //   });
+          // },
+        ),
+      
     );
   }
 }

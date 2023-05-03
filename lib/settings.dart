@@ -62,14 +62,12 @@ class _AccountSettingPageState extends State<AccountSettingPage> {
         body: SingleChildScrollView(
           child: Column(
             children: const [
-              SizedBox(height: 20),
+              SizedBox(height: 70),
               CircleAvatar(
                 radius: 60,
                 backgroundImage: AssetImage('assets/images/profile.png'),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              
               Text(
                 'Username',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -244,7 +242,7 @@ class _AccountSettingPageState extends State<AccountSettingPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const CartPage(foodDetails: {},)));
+                        builder: (context) =>  CartPage()));
                 break;
               case 2:
                 Navigator.push(

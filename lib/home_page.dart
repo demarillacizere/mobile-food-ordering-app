@@ -334,22 +334,22 @@ class _MyHomePageState extends State<MyHomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: 10,
+            height: 50,
           ),
-          CustomAppBar(
-            Icons.arrow_back_ios_new_outlined,
-            Icons.notifications,
-            () => Navigator.pop(context),
-            itemBuilder: (context, index) {
-              return const Card(
-                margin: EdgeInsets.only(right: 10),
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundImage: AssetImage('assets/images/profile.png'),
-                ),
-              );
-            },
-          ),
+          // CustomAppBar(
+          //   Icons.arrow_back_ios_new_outlined,
+          //   Icons.notifications,
+          //   () => Navigator.pop(context),
+          //   itemBuilder: (context, index) {
+          //     return const Card(
+          //       margin: EdgeInsets.only(right: 10),
+          //       child: CircleAvatar(
+          //         radius: 20,
+          //         backgroundImage: AssetImage('assets/images/profile.png'),
+          //       ),
+          //     );
+          //   },
+          // ),
           const Padding(
             padding: EdgeInsets.fromLTRB(15, 16, 8, 0),
             child: Text('Choose the\nFood You Love',
