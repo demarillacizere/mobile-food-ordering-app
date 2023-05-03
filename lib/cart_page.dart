@@ -1,104 +1,6 @@
-// import 'package:food_app/models/food.dart';
-// import 'package:food_app/models/restaurants.dart';
-// import 'package:food_app/screens/home/widget/food_item.dart';
-
-// class CartPage extends StatefulWidget {
-//   final List<Food> cartItems;
-
-//   final Function(Food) addToCart;
-//   CartPage(
-//       {required this.cartItems,
-
-//       required this.addToCart});
-
-//   @override
-//   _CartPageState createState() => _CartPageState();
-// }
-
-// class _CartPageState extends State<CartPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Cart'),
-//       ),
-//       body: widget.cartItems.isEmpty
-//           ? Center(
-//               child: Text('Your cart is empty'),
-//             )
-//           : ListView.builder(
-//               itemCount: widget.cartItems.length,
-//               itemBuilder: (context, index) {
-//                 final item = widget.cartItems[index];
-//                 return FoodItem(food: item);
-//               },
-//             ),
-//     );
-//   }
-// }
-
-// import 'package:flutter/material.dart';
-
-// class CartPage extends StatefulWidget {
-//   final Map<String, int> foodDetails;
-
-//   const CartPage({Key? key, required this.foodDetails}) : super(key: key);
-
-//   @override
-//   _CartPageState createState() => _CartPageState();
-// }
-
-// class _CartPageState extends State<CartPage> {
-//   Map<String, int> _cartItems = {};
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _cartItems = Map<String, int>.from(widget.foodDetails);
-//   }
-
-//   void _removeFromCart(String itemName) {
-//     setState(() {
-//       _cartItems.remove(itemName);
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Cart'),
-//       ),
-//       body: _cartItems.isNotEmpty
-//           ? ListView.builder(
-//               itemCount: _cartItems.length,
-//               itemBuilder: (BuildContext context, int index) {
-//                 String itemName = _cartItems.keys.toList()[index];
-//                 int quantity = _cartItems.values.toList()[index];
-//                 int price = _cartItems.values.toList()[index];
-//                 return ListTile(
-//                   title: Text(itemName),
-//                   subtitle: Text('Quantity: $quantity'),
-//                   trailing: Text(
-//                     '${quantity * widget.foodDetails[itemName]!} Rwf',
-//                     style: TextStyle(
-//                       fontWeight: FontWeight.bold,
-//                       fontSize: 16,
-//                     ),
-//                   ),
-//                   onTap: () => _removeFromCart(itemName),
-//                 );
-//               },
-//             )
-//           : Center(
-//               child: Text('Cart is empty'),
-//             ),
-//     );
-//   }
-// }
-
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/settings.dart';
 import 'package:food_app/widgets/custom_app_bar.dart';
@@ -107,72 +9,46 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'notification_page.dart';
 
 class CartPage extends StatefulWidget {
-  final Map<String, Map<String, dynamic>> foodDetails;
 
-  const CartPage({Key? key, required this.foodDetails}) : super(key: key);
+  const CartPage({Key? key}) : super(key: key);
 
   @override
   _CartPageState createState() => _CartPageState();
 }
 
 class _CartPageState extends State<CartPage> {
-  late Map<String, Map<String, dynamic>> _cartData;
-  num _totalPrice = 0;
+  List<Map<String, dynamic>> restaurants = [];
+
+  var selected = 0;
+  final pageController = PageController();
+
+  final CollectionReference usersRef =
+      FirebaseFirestore.instance.collection('cart');
+
+// fetch the documents in the collection
+  Future<void> get() async {
+    try {
+      QuerySnapshot snapshot = await usersRef.get();
+      setState(() {
+        restaurants = snapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList();
+      });
+    } catch (e) {
+      print('Error fetching users: $e');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _loadCartData();
-  }
-
-  Future<void> _loadCartData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final cartDataString = prefs.getString('cartData') ?? '{}';
-    setState(() {
-      _cartData = Map<String, Map<String, dynamic>>.from(
-        json.decode(cartDataString),
-      );
-    });
-  }
-
-  void _saveCartData() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('cartData', json.encode(_cartData));
-  }
-
-  void _addToCart(String itemName) {
-    setState(() {
-      if (_cartData.containsKey(itemName)) {
-        _cartData[itemName]!['count'] += 1;
-      } else {
-        _cartData[itemName] = {
-          'count': 1,
-          'price': widget.foodDetails[itemName]!['price'],
-        };
-      }
-      _totalPrice += widget.foodDetails[itemName]!['price'];
-      _saveCartData();
-    });
-  }
-
-  void _removeFromCart(String itemName) {
-    setState(() {
-      if (_cartData.containsKey(itemName)) {
-        _cartData[itemName]!['count'] -= 1;
-        if (_cartData[itemName]!['count'] == 0) {
-          _cartData.remove(itemName);
-        }
-        _totalPrice -= widget.foodDetails[itemName]!['price'];
-        _saveCartData();
-      }
-    });
+    get();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFF7DD),
-      
       body: Column(
         children: [
           SizedBox(height: 10),
@@ -191,25 +67,13 @@ class _CartPageState extends State<CartPage> {
             },
           ),
           Expanded(
-            
             child: ListView.builder(
-              itemCount: widget.foodDetails.length,
-              itemBuilder: (context, index) {
-                final itemName = widget.foodDetails.keys.elementAt(index);
-                final itemDetails = widget.foodDetails[itemName]!;
-                final itemCount = itemDetails['count'] ?? 0;
-                final itemPrice = itemDetails['price'];
-                // return ListTile(
-                //   title: Text(itemName),
-                //   subtitle: Text('Count: $itemCount, Price: $itemPrice Rwf'),
-                //   trailing: IconButton(
-                //     icon: Icon(Icons.add),
-                //     onPressed: () => _addToCart(itemName),
-                //   ),
-                //   onTap: itemCount > 0 ? () => _removeFromCart(itemName) : null,
-                // );
+              itemCount: restaurants.length,
+              itemBuilder: (BuildContext context, int index) {
+                final restaurant = restaurants[index];
+
                 return Card(
-                  margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
                   color: Colors.white,
                   elevation: 8.0,
                   shape: RoundedRectangleBorder(
@@ -229,46 +93,18 @@ class _CartPageState extends State<CartPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(itemName,
+                            Text(restaurant['name'],
                                 style: TextStyle(
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.bold)),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "$itemPrice Rwf",
-                                  style: TextStyle(fontSize: 14.0),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text('Quantity: $itemCount')
-                              ],
-                            ),
-                            Card(
-                                child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Text(
-                                      'Total: ${int.parse(itemPrice) * itemCount} Rwf'),
-                                ],
-                              ),
-                            ))
+                            Text(
+                              restaurant['price'].toString() + " Rwf",
+                              style: TextStyle(fontSize: 14.0),
+                            )
                           ],
                         ),
                       ),
                       const Spacer(),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        color: Colors.red,
-                        onPressed: () {
-                          _removeFromCart(itemName);
-                        },
-                      ),
                     ],
                   ),
                 );
@@ -280,7 +116,6 @@ class _CartPageState extends State<CartPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Card(
-                
                 margin: EdgeInsets.fromLTRB(15, 0, 15, 15),
                 color: Colors.white,
                 elevation: 8.0,
@@ -291,13 +126,14 @@ class _CartPageState extends State<CartPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      Text('Total: $_totalPrice Rwf'),
+                      Text("Total: Rwf"),
                       SizedBox(height: 10),
                       ElevatedButton(
-                       
                         onPressed: () {},
                         child: Text('Place Order'),
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(254, 194, 43, 1))) ,
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Color.fromRGBO(254, 194, 43, 1))),
                       ),
                     ],
                   ),
@@ -323,8 +159,8 @@ class _CartPageState extends State<CartPage> {
                       builder: (context) => const NotificationPage()));
               break;
             case 1:
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) =>  CartPage(foodDetails: {},)));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => CartPage()));
               break;
           }
         },
@@ -346,14 +182,7 @@ class _CartPageState extends State<CartPage> {
             label: 'Settings',
           ),
         ],
-        // currentIndex: _selectedIndex,
-        // onTap: (index) {
-        //   setState(() {
-        //     _selectedIndex = index;
-        //   });
-        // },
       ),
     );
-    
   }
 }

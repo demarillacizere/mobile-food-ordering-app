@@ -351,7 +351,7 @@ class _NotificationPageState extends State<NotificationPage> {
               break;
             case 1:
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CartPage(foodDetails: {},)));
+                  MaterialPageRoute(builder: (context) => CartPage()));
               break;
             case 3:
               Navigator.push(

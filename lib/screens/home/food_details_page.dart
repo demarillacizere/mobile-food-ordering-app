@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 import '../../../models/food.dart';
 import '../../cart_page.dart';
 import '../../notification_page.dart';
@@ -15,7 +17,9 @@ class FoodDetailsPage extends StatefulWidget {
   const FoodDetailsPage({
     Key? key,
     required this.food,
-    required this.floatingActionButton, required this.price, required this.description,
+    required this.floatingActionButton,
+    required this.price,
+    required this.description,
   }) : super(key: key);
 
   @override
@@ -27,24 +31,37 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
   Map<String, Map<String, dynamic>> foodDetails = {};
 
   void addToCart() {
-    if (_count > 0) {
-      foodDetails[widget.food] = {
-        'count': _count,
-        'price': widget.price,
-      };
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => CartPage(foodDetails: foodDetails),
+  if (_count > 0) {
+    final String itemName = widget.food;
+    final double itemPrice = double.parse(widget.price);
+    final int itemQuantity = _count;
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    firestore.collection("cart").add({
+      "name": itemName,
+      "price": itemPrice,
+      "quantity": itemQuantity
+    }).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Item added to cart'),
         ),
       );
-    } else {
+    }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please select quantity'),
+          content: Text('Failed to add item to cart: $error'),
         ),
       );
-    }
+    });
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Please select quantity'),
+      ),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +227,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => CartPage(
-                            foodDetails: {},
+                            
                           )));
               break;
           }
