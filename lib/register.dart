@@ -33,8 +33,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
-  void _submitForm() {}
-
   @override
   Future signUp() async {
     await FirebaseAuth.instance.createUserWithEmailAndPassword(

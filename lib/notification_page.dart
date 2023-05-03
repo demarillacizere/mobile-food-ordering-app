@@ -4,6 +4,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'home_page.dart';
 import 'settings.dart';
 import 'profile_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // import 'package:firebase_core/firebase_core.dart';
 
@@ -28,10 +31,10 @@ class MyApp extends StatelessWidget {
 }
 
 class NotificationPage extends StatefulWidget {
-  const NotificationPage({super.key});
+  const NotificationPage({Key? key}) : super(key: key);
 
   @override
-  State<NotificationPage> createState() => _NotificationPageState();
+  _NotificationPageState createState() => _NotificationPageState();
 }
 
 class _NotificationPageState extends State<NotificationPage> {
@@ -57,6 +60,26 @@ class _NotificationPageState extends State<NotificationPage> {
           child: Text('Snacks'),
         )),
   ];
+
+      late String _currentUserId;
+      late Stream<QuerySnapshot<Map<String, dynamic>>> _notificationsStream;
+
+      @override
+      void initState() {
+        super.initState();
+        // Get the current user ID
+        // Get the current user ID
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        final User? user = auth.currentUser;
+        final String _currentUserId = user!.uid;
+
+        // Set up a Firestore stream to listen for changes to the user's notifications
+        _notificationsStream = FirebaseFirestore.instance
+            .collection('users')
+            .doc(_currentUserId)
+            .collection('notifications')
+            .snapshots();
+      }
 
   @override
   Widget build(BuildContext context) {
@@ -101,245 +124,273 @@ class _NotificationPageState extends State<NotificationPage> {
           ),
         ],
       ),
-      body: Container(
-        color: const Color(0xFFFFF7DD),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Center(
-                    child: Text('Notifications',
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(254, 194, 43, 1)))),
-              ),
-              TextField(
-                onChanged: (value) {
-                  setState(() {
-                    searchText = value;
-                  });
-                },
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: 'Search',
-                  suffixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 110,
-                    color: const Color.fromARGB(255, 240, 226, 38),
-                    child: const Padding(
-                      padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                      child: Center(
-                        child: Text('Past Orders',
-                            style: TextStyle(
-                                fontSize: 10.0, fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10.0),
-                  Container(
-                    width: 110,
-                    color: const Color.fromARGB(255, 241, 241, 241),
-                    child: const Padding(
-                      padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                      child: Center(
-                        child: Text('Cart',
-                            style: TextStyle(
-                                fontSize: 10.0, fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10.0),
-                  Container(
-                    width: 110,
-                    color: const Color.fromARGB(255, 241, 241, 241),
-                    child: const Padding(
-                      padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                      child: Center(
-                        child: Text('Pending',
-                            style: TextStyle(
-                                fontSize: 10.0, fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10.0),
-                  Container(
-                    width: 110,
-                    color: const Color.fromARGB(255, 241, 241, 241),
-                    child: const Padding(
-                      padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                      child: Center(
-                        child: Text('Complete',
-                            style: TextStyle(
-                                fontSize: 10.0, fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Card(
-                color: const Color(0xFFFFF7DD),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Image(
-                        image: AssetImage('assets/images/orderImage.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text('Dyners',
-                              style: TextStyle(
-                                  fontSize: 18.0, fontWeight: FontWeight.bold)),
-                          Text("Your order is ready for pickup"),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    const Text("14-03-2023"),
-                  ],
-                ),
-              ),
-              Card(
-                color: const Color(0xFFFFF7DD),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Image(
-                        image: AssetImage('assets/images/orderImage.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text('Divine',
-                              style: TextStyle(
-                                  fontSize: 18.0, fontWeight: FontWeight.bold)),
-                          Text("Your order has been taken by the vendor"),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    const Text("13-03-2023"),
-                  ],
-                ),
-              ),
-              Card(
-                color: const Color(0xFFFFF7DD),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Image(
-                        image: AssetImage('assets/images/orderImage.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text('Divine',
-                              style: TextStyle(
-                                  fontSize: 18.0, fontWeight: FontWeight.bold)),
-                          Text("Your order is ready for pickup"),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    const Text("11-03-2023"),
-                  ],
-                ),
-              ),
-              Card(
-                color: const Color(0xFFFFF7DD),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Image(
-                        image: AssetImage('assets/images/orderImage.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text('Meza Fresh',
-                              style: TextStyle(
-                                  fontSize: 18.0, fontWeight: FontWeight.bold)),
-                          Text("Your order is ready for pickup"),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    const Text("11-03-2023"),
-                  ],
-                ),
-              ),
-              Card(
-                color: const Color(0xFFFFF7DD),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Image(
-                        image: AssetImage('assets/images/orderImage.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text('Dyners',
-                              style: TextStyle(
-                                  fontSize: 18.0, fontWeight: FontWeight.bold)),
-                          Text("Your order is ready for pickup"),
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    const Text("10-03-2023"),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: _notificationsStream,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final notifications = snapshot.data!.docs;
+
+          if (notifications.isEmpty) {
+            return const Center(
+              child: Text('You have no notifications.'),
+            );
+          }
+
+          return ListView.builder(
+            itemCount: notifications.length,
+            itemBuilder: (context, index) {
+              final notification = notifications[index].data();
+              return ListTile(
+                title: Text(notification['title']),
+                subtitle: Text(notification['body']),
+                trailing: Text(notification['timestamp'].toString()),
+              );
+            },
+          );
+        },
       ),
+      // body: Container(
+      //   color: const Color(0xFFFFF7DD),
+      //   child: Padding(
+      //     padding: const EdgeInsets.all(16.0),
+      //     child: ListView(
+      //       scrollDirection: Axis.vertical,
+      //       children: <Widget>[
+      //         const Padding(
+      //           padding: EdgeInsets.all(16.0),
+      //           child: Center(
+      //               child: Text('Notifications',
+      //                   style: TextStyle(
+      //                       fontSize: 18.0,
+      //                       fontWeight: FontWeight.bold,
+      //                       color: Color.fromRGBO(254, 194, 43, 1)))),
+      //         ),
+      //         TextField(
+      //           onChanged: (value) {
+      //             setState(() {
+      //               searchText = value;
+      //             });
+      //           },
+      //           decoration: InputDecoration(
+      //             fillColor: Colors.white,
+      //             filled: true,
+      //             hintText: 'Search',
+      //             suffixIcon: const Icon(Icons.search),
+      //             border: OutlineInputBorder(
+      //               borderRadius: BorderRadius.circular(20.0),
+      //               borderSide: BorderSide.none,
+      //             ),
+      //           ),
+      //         ),
+      //         const SizedBox(
+      //           height: 20.0,
+      //         ),
+      //         Row(
+      //           mainAxisAlignment: MainAxisAlignment.start,
+      //           children: [
+      //             Container(
+      //               width: 110,
+      //               color: const Color.fromARGB(255, 240, 226, 38),
+      //               child: const Padding(
+      //                 padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
+      //                 child: Center(
+      //                   child: Text('Past Orders',
+      //                       style: TextStyle(
+      //                           fontSize: 10.0, fontWeight: FontWeight.bold)),
+      //                 ),
+      //               ),
+      //             ),
+      //             const SizedBox(width: 10.0),
+      //             Container(
+      //               width: 110,
+      //               color: const Color.fromARGB(255, 241, 241, 241),
+      //               child: const Padding(
+      //                 padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
+      //                 child: Center(
+      //                   child: Text('Cart',
+      //                       style: TextStyle(
+      //                           fontSize: 10.0, fontWeight: FontWeight.bold)),
+      //                 ),
+      //               ),
+      //             ),
+      //             const SizedBox(width: 10.0),
+      //             Container(
+      //               width: 110,
+      //               color: const Color.fromARGB(255, 241, 241, 241),
+      //               child: const Padding(
+      //                 padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
+      //                 child: Center(
+      //                   child: Text('Pending',
+      //                       style: TextStyle(
+      //                           fontSize: 10.0, fontWeight: FontWeight.bold)),
+      //                 ),
+      //               ),
+      //             ),
+      //             const SizedBox(width: 10.0),
+      //             Container(
+      //               width: 110,
+      //               color: const Color.fromARGB(255, 241, 241, 241),
+      //               child: const Padding(
+      //                 padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
+      //                 child: Center(
+      //                   child: Text('Complete',
+      //                       style: TextStyle(
+      //                           fontSize: 10.0, fontWeight: FontWeight.bold)),
+      //                 ),
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //         const SizedBox(
+      //           height: 20.0,
+      //         ),
+      //         Card(
+      //           color: const Color(0xFFFFF7DD),
+      //           child: Row(
+      //             children: [
+      //               const Padding(
+      //                 padding: EdgeInsets.all(10.0),
+      //                 child: Image(
+      //                   image: AssetImage('assets/images/orderImage.png'),
+      //                   fit: BoxFit.cover,
+      //                 ),
+      //               ),
+      //               Padding(
+      //                 padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
+      //                 child: Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                   children: const [
+      //                     Text('Dyners',
+      //                         style: TextStyle(
+      //                             fontSize: 18.0, fontWeight: FontWeight.bold)),
+      //                     Text("Your order is ready for pickup"),
+      //                   ],
+      //                 ),
+      //               ),
+      //               const Spacer(),
+      //               const Text("14-03-2023"),
+      //             ],
+      //           ),
+      //         ),
+      //         Card(
+      //           color: const Color(0xFFFFF7DD),
+      //           child: Row(
+      //             children: [
+      //               const Padding(
+      //                 padding: EdgeInsets.all(10.0),
+      //                 child: Image(
+      //                   image: AssetImage('assets/images/orderImage.png'),
+      //                   fit: BoxFit.cover,
+      //                 ),
+      //               ),
+      //               Padding(
+      //                 padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
+      //                 child: Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                   children: const [
+      //                     Text('Divine',
+      //                         style: TextStyle(
+      //                             fontSize: 18.0, fontWeight: FontWeight.bold)),
+      //                     Text("Your order has been taken by the vendor"),
+      //                   ],
+      //                 ),
+      //               ),
+      //               const Spacer(),
+      //               const Text("13-03-2023"),
+      //             ],
+      //           ),
+      //         ),
+      //         Card(
+      //           color: const Color(0xFFFFF7DD),
+      //           child: Row(
+      //             children: [
+      //               const Padding(
+      //                 padding: EdgeInsets.all(10.0),
+      //                 child: Image(
+      //                   image: AssetImage('assets/images/orderImage.png'),
+      //                   fit: BoxFit.cover,
+      //                 ),
+      //               ),
+      //               Padding(
+      //                 padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
+      //                 child: Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                   children: const [
+      //                     Text('Divine',
+      //                         style: TextStyle(
+      //                             fontSize: 18.0, fontWeight: FontWeight.bold)),
+      //                     Text("Your order is ready for pickup"),
+      //                   ],
+      //                 ),
+      //               ),
+      //               const Spacer(),
+      //               const Text("11-03-2023"),
+      //             ],
+      //           ),
+      //         ),
+      //         Card(
+      //           color: const Color(0xFFFFF7DD),
+      //           child: Row(
+      //             children: [
+      //               const Padding(
+      //                 padding: EdgeInsets.all(10.0),
+      //                 child: Image(
+      //                   image: AssetImage('assets/images/orderImage.png'),
+      //                   fit: BoxFit.cover,
+      //                 ),
+      //               ),
+      //               Padding(
+      //                 padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
+      //                 child: Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                   children: const [
+      //                     Text('Meza Fresh',
+      //                         style: TextStyle(
+      //                             fontSize: 18.0, fontWeight: FontWeight.bold)),
+      //                     Text("Your order is ready for pickup"),
+      //                   ],
+      //                 ),
+      //               ),
+      //               const Spacer(),
+      //               const Text("11-03-2023"),
+      //             ],
+      //           ),
+      //         ),
+      //         Card(
+      //           color: const Color(0xFFFFF7DD),
+      //           child: Row(
+      //             children: [
+      //               const Padding(
+      //                 padding: EdgeInsets.all(10.0),
+      //                 child: Image(
+      //                   image: AssetImage('assets/images/orderImage.png'),
+      //                   fit: BoxFit.cover,
+      //                 ),
+      //               ),
+      //               Padding(
+      //                 padding: const EdgeInsets.fromLTRB(30.0, 8.0, 0.0, 8.0),
+      //                 child: Column(
+      //                   crossAxisAlignment: CrossAxisAlignment.start,
+      //                   children: const [
+      //                     Text('Dyners',
+      //                         style: TextStyle(
+      //                             fontSize: 18.0, fontWeight: FontWeight.bold)),
+      //                     Text("Your order is ready for pickup"),
+      //                   ],
+      //                 ),
+      //               ),
+      //               const Spacer(),
+      //               const Text("10-03-2023"),
+      //             ],
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (int index) {
           switch (index) {

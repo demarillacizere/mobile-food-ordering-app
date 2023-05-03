@@ -11,7 +11,7 @@ import 'notification_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
+  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -33,32 +33,34 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
-  // int _selectedIndex = 0;
-  // final FirebaseAuth auth = FirebaseAuth.instance;
-  // final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  int _selectedIndex = 0;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  // String firstname = '';
-  // String email = '';
-  // String phoneNumber = '';
+  String firstname = '';
+  String email = '';
+  String phoneNumber = '';
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _getUserData();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _getUserData();
+  }
 
-  // void _getUserData() async {
-  //   final User? user = auth.currentUser;
-  //   final DocumentSnapshot snapshot =
-  //       await firestore.collection('users').doc(user?.uid).get();
+  void _getUserData() async {
+    final User? user = auth.currentUser;
+    final DocumentSnapshot snapshot =
+        await firestore.collection('users').doc(user?.uid).get();
 
-  //   setState(() {
-  //     firstname = snapshot['firstName'];
-  //     email = snapshot['email'];
-  //     // phoneNumber = snapshot['phone_number'];
-  //   });
-  // }
+    setState(() {
+      firstname = snapshot['firstName'];
+      email = snapshot['email'];
+      print(firstname);
+      // phoneNumber = snapshot['phone_number'];
+    });
+  }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

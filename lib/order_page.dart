@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/search_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-
+import 'home_page.dart';
+import 'settings.dart';
+import 'notification_page.dart';
 // import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
@@ -19,19 +21,25 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           // primarySwatch: Color(0xFFfff7dd),
           ),
-      home: const MyHomePage(),
+      home: const UserCartPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+final Map<String, WidgetBuilder> routes = {
+  '/home': (BuildContext context) => const HomePage(),
+  '/notification': (BuildContext context) => const NotificationPage(),
+  '/settings': (BuildContext context) => const AccountSettingPage(),
+};
+
+class UserCartPage extends StatefulWidget {
+  const UserCartPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<UserCartPage> createState() => _UserCartPage();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _UserCartPage extends State<UserCartPage> {
   int _selectedIndex = 0;
 
   final List<Container> _items = [
@@ -487,7 +495,27 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blue,
+        onTap: (int index) {
+            switch (index) {
+              case 0:
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const HomePage()));
+                break;
+
+              case 3:
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AccountSettingPage()));
+                break;
+              case 2:
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NotificationPage()));
+                break;
+            }
+          },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home, color: Colors.black),
@@ -506,12 +534,7 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Settings',
           ),
         ],
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
+        
       ),
     );
   }
