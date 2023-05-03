@@ -270,13 +270,14 @@
 //   }
 // }
 
+import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:food_app/models/restaurants.dart';
+import 'package:food_app/screens/home/new-menu.dart';
+// import 'package:food_app/models/restaurants.dart';
+
 import 'package:food_app/screens/home/home.dart';
-import 'package:food_app/screens/home/widget/menu.dart';
-import 'package:food_app/screens/home/widget/restaurant_info.dart';
-import 'package:food_app/screens/home/widget/restaurant_item.dart';
-import 'package:food_app/screens/home/widget/restaurant_list_view.dart';
+
 import 'package:food_app/settings.dart';
 import 'package:food_app/widgets/custom_app_bar.dart';
 
@@ -289,14 +290,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<Map<String, dynamic>> restaurants = [];
+
   var selected = 0;
   final pageController = PageController();
-  final restaurant = Restaurant.generateRestaurant();
+// final restaurant = Restaurant.fromJson(json as Map<String, dynamic>);
+
+// create a reference to the Firestore collection
+  final CollectionReference usersRef =
+      FirebaseFirestore.instance.collection('restaurant');
+
+// fetch the documents in the collection
+  Future<void> get() async {
+    try {
+      QuerySnapshot snapshot = await usersRef.get();
+      setState(() {
+        restaurants = snapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList();
+      });
+    } catch (e) {
+      print('Error fetching users: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    get();
+  }
+
   final Map<String, WidgetBuilder> routes = {
     '/notification': (BuildContext context) => NotificationPage(),
     '/settings': (BuildContext context) => AccountSettingPage(),
   };
-  final restaurants = Restaurant.generateRestaurant();
+  // final restaurants = Restaurant.;
 
   @override
   Widget build(BuildContext context) {
@@ -305,6 +333,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(
+            height: 10,
+          ),
           CustomAppBar(
             Icons.arrow_back_ios_new_outlined,
             Icons.notifications,
@@ -332,6 +363,7 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: restaurants.length,
               itemBuilder: (BuildContext context, int index) {
                 final restaurant = restaurants[index];
+
                 return Card(
                   margin: const EdgeInsets.fromLTRB(15, 0, 15, 10),
                   child: ListTile(
@@ -339,17 +371,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       image: AssetImage('assets/images/orderImage.png'),
                       fit: BoxFit.cover,
                     ),
-                    title: Text(restaurant.name),
-                    subtitle: Text(restaurant.label),
-                    trailing: Icon(Icons.keyboard_arrow_right),
+                    title: Text(restaurant['name']),
+                    subtitle: Text(restaurant['label']),
+                    trailing: const Icon(Icons.keyboard_arrow_right),
                     onTap: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              HomePage(restaurant: restaurant),
-                        ),
-                      );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RestaurantDetail(
+                                    restId: restaurant['name'],
+                                  )));
                     },
                   ),
                 );

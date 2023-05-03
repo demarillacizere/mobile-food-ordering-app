@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_app/order_page.dart';
 import 'package:food_app/search_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'cart_page.dart';
 import 'home_page.dart';
 import 'settings.dart';
 import 'profile_page.dart';
@@ -350,7 +351,7 @@ class _NotificationPageState extends State<NotificationPage> {
               break;
             case 1:
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MyOrderPage()));
+                  MaterialPageRoute(builder: (context) => CartPage(foodDetails: {},)));
               break;
             case 3:
               Navigator.push(

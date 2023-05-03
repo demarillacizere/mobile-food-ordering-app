@@ -13,7 +13,7 @@ import 'food_list.dart';
 import 'food_list_view.dart';
 
 class MenuScreen extends StatefulWidget {
-  final Restaurant restaurant;
+  final String restaurant;
 
   const MenuScreen({Key? key, required this.restaurant}) : super(key: key);
 
@@ -46,15 +46,15 @@ class _MenuScreenState extends State<MenuScreen> {
               );
             },
           ),
-          RestaurantInfo(restaurant: widget.restaurant),
-          FoodList(selected, (index) {
-          setState(() {
-            selected = index;
-          });
-          pageController.animateToPage(index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeIn);
-        }, widget.restaurant),
+          // RestaurantInfo(restaurant: widget.restaurant),
+        //   FoodList(selected, (index) {
+        //   setState(() {
+        //     selected = index;
+        //   });
+        //   pageController.animateToPage(index,
+        //       duration: const Duration(milliseconds: 300),
+        //       curve: Curves.easeIn);
+        // }, widget.restaurant),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -97,14 +97,14 @@ class _MenuScreenState extends State<MenuScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => CartPage(addToCart: (Food ) {  }, cartItems: [],   ) ));
-        },
-        backgroundColor: Colors.red,
-        child: Icon(Icons.shopping_cart),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(context, MaterialPageRoute(builder: (context) => CartPage(addToCart: (Food ) {  }, cartItems: [],   ) ));
+      //   },
+      //   backgroundColor: Colors.red,
+      //   child: Icon(Icons.shopping_cart),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     
     );
   }

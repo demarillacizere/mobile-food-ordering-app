@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/order_page.dart';
+import 'cart_page.dart';
 import 'home_page.dart';
 import 'notification_page.dart';
 
@@ -236,14 +237,14 @@ class _AccountSettingPageState extends State<AccountSettingPage> {
           onTap: (int index) {
             switch (index) {
               case 0:
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MyHomePage()));
-                break;
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()));
+              break;
               case 1:
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const MyOrderPage()));
+                        builder: (context) => const CartPage(foodDetails: {},)));
                 break;
               case 2:
                 Navigator.push(
