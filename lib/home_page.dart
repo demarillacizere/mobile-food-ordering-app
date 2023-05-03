@@ -363,18 +363,9 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: restaurants.length,
               itemBuilder: (BuildContext context, int index) {
                 final restaurant = restaurants[index];
-
-                return Card(
-                  margin: const EdgeInsets.fromLTRB(15, 0, 15, 10),
-                  child: ListTile(
-                    leading: Image(
-                      image: AssetImage('assets/images/orderImage.png'),
-                      fit: BoxFit.cover,
-                    ),
-                    title: Text(restaurant['name']),
-                    subtitle: Text(restaurant['label']),
-                    trailing: const Icon(Icons.keyboard_arrow_right),
-                    onTap: () {
+                
+                return GestureDetector(
+                  onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -382,6 +373,48 @@ class _MyHomePageState extends State<MyHomePage> {
                                     restId: restaurant['name'],
                                   )));
                     },
+                  child: Card(
+                    margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                    color: Colors.white,
+                    elevation: 8.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Image(
+                            image: AssetImage('assets/images/orderImage.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(restaurant['name'],
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold)),
+                              Text(
+                                restaurant['label'],
+                                style: TextStyle(fontSize: 14.0),
+                              )
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        Container(
+                          margin: const EdgeInsets.only(right: 10.0),
+                          child: const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 );
               },
