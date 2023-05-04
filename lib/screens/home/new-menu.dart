@@ -96,6 +96,8 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
                                       ['description'],
                                   price: snapshot.data!['menu2'][index]
                                       ['price'],
+                                  imageUrl: snapshot.data!['menu2'][index]
+                                      ['imageUrl'],
                                 )));
                       },
                       // child: ListTile(
@@ -145,12 +147,21 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
                         ),
                         child: Row(
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Image(
-                                image:
-                                    AssetImage('assets/images/orderImage.png'),
-                                fit: BoxFit.cover,
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    snapshot.data!['menu2'][index]['imageUrl'],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
                             ),
                             Padding(
@@ -164,8 +175,7 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.bold)),
                                   Text(
-                                    snapshot.data!['menu2'][index]
-                                        ['price'],
+                                    snapshot.data!['menu2'][index]['price'],
                                     style: TextStyle(fontSize: 14.0),
                                   )
                                 ],
@@ -184,7 +194,6 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
                       ),
                     );
                   },
-                  
                 );
               } else {
                 return const Center(

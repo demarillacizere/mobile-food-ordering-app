@@ -273,6 +273,7 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:food_app/cart_page.dart';
 import 'package:food_app/screens/home/new-menu.dart';
 // import 'package:food_app/models/restaurants.dart';
 
@@ -382,13 +383,23 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     child: Row(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Image(
-                            image: AssetImage('assets/images/orderImage.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                        Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    restaurant['imageUrl'],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                           child: Column(
@@ -439,7 +450,7 @@ class _MyHomePageState extends State<MyHomePage> {
               break;
             case 1:
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MyOrderPage()));
+                  MaterialPageRoute(builder: (context) => const CartPage()));
               break;
           }
         },
