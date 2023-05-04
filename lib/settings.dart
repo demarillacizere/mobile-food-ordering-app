@@ -1,5 +1,11 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/order_page.dart';
+import 'cart_page.dart';
 import 'home_page.dart';
 import 'notification_page.dart';
 
@@ -24,7 +30,7 @@ class MyApp extends StatelessWidget {
 }
 
 final Map<String, WidgetBuilder> routes = {
-  '/home': (BuildContext context) => HomePage(),
+  '/home': (BuildContext context) => MyHomePage(),
   // '/settings': (BuildContext context) => AccountSettingPage(),
 };
 
@@ -37,45 +43,49 @@ class AccountSettingPage extends StatefulWidget {
 
 class _AccountSettingPageState extends State<AccountSettingPage> {
   int _selectedIndex = 1;
+  String? _firstName;
+  String? _lastName;
+  String? _email;
+  String? fullName;
+
+  Future<void> _getUserData() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    final userData =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    setState(() {
+      _firstName = userData.get('firstName');
+      _lastName = userData.get('secondName');
+      _email = userData.get('email');
+      fullName = '${_firstName ?? "User Name"} ${_lastName ?? "Last Name"}';
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFFFFF7DD),
-        // floatingActionButton: FloatingActionButton(
-        //     onPressed: () {
-        //       Navigator.push(
-        //         context,
-        //         MaterialPageRoute(builder: (context) => const MyHomePage()),
-        //       );
-        //     },
-        //     backgroundColor: Colors.yellow,
-        //     child: const Icon(Icons.home)),
-        // appBar: AppBar(
-        //   leading: IconButton(
-        //     icon: const Icon(Icons.arrow_back),
-        //     onPressed: () {
-        //       Navigator.pop(context);
-        //     },
-        //   ),
-        // ),
         body: SingleChildScrollView(
           child: Column(
-            children: const [
-              SizedBox(height: 20),
+            children: [
+              SizedBox(height: 70),
               CircleAvatar(
                 radius: 60,
                 backgroundImage: AssetImage('assets/images/profile.png'),
               ),
-              SizedBox(
-                height: 10,
-              ),
+
               Text(
-                'Username',
+                fullName ?? "User Name",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 5),
               Text(
-                'user@example.com',
+                _email ?? 'user@example.com',
                 style: TextStyle(fontSize: 18),
               ),
               SizedBox(
@@ -237,13 +247,11 @@ class _AccountSettingPageState extends State<AccountSettingPage> {
             switch (index) {
               case 0:
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const HomePage()));
+                    MaterialPageRoute(builder: (context) => MyHomePage()));
                 break;
               case 1:
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MyOrderPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CartPage()));
                 break;
               case 2:
                 Navigator.push(

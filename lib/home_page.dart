@@ -1,302 +1,194 @@
+import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:food_app/order_page.dart';
-import 'package:food_app/search_bar.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'settings.dart';
+import 'package:food_app/cart_page.dart';
+import 'package:food_app/screens/home/new-menu.dart';
+// import 'package:food_app/models/restaurants.dart';
+
+import 'package:food_app/screens/home/home.dart';
+
+import 'package:food_app/settings.dart';
+import 'package:food_app/widgets/custom_app_bar.dart';
+
 import 'notification_page.dart';
-import 'profile_page.dart';
-
-// import 'package:firebase_core/firebase_core.dart';
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Chap Chap Delivery',
-      theme: ThemeData(
-          // primarySwatch: Color(0xFFfff7dd),
-          ),
-      home: const MyHomePage(),
-    );
-  }
-}
-
-final Map<String, WidgetBuilder> routes = {
-  '/notification': (BuildContext context) => NotificationPage(),
-  '/settings': (BuildContext context) => AccountSettingPage(),
-};
+import 'order_page.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
+  List<Map<String, dynamic>> restaurants = [];
 
-  final List<Container> _items = [
-    Container(
-      height: 40.0,
-      width: 80.0,
-      color: Colors.yellow,
-      // child: const Padding(
-      // padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
-      child: const Center(child: Text('Food')),
-    ),
-    Container(
-      height: 40.0,
-      width: 80.0,
-      color: Colors.yellow,
-      // child: const Padding(
-      // padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
-      child: const Center(child: Text('Drinks')),
-    ),
-    Container(
-      height: 40.0,
-      width: 80.0,
-      color: Colors.yellow,
-      // child: const Padding(
-      // padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
-      child: const Center(child: Text('Snacks')),
-    ),
-  ];
+  var selected = 0;
+  final pageController = PageController();
+// final restaurant = Restaurant.fromJson(json as Map<String, dynamic>);
+
+// create a reference to the Firestore collection
+  final CollectionReference usersRef =
+      FirebaseFirestore.instance.collection('restaurant');
+
+// fetch the documents in the collection
+  Future<void> get() async {
+    try {
+      QuerySnapshot snapshot = await usersRef.get();
+      setState(() {
+        restaurants = snapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList();
+      });
+    } catch (e) {
+      print('Error fetching users: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    get();
+  }
+
+  final Map<String, WidgetBuilder> routes = {
+    '/notification': (BuildContext context) => const NotificationPage(),
+    '/settings': (BuildContext context) => const AccountSettingPage(),
+  };
+  // final restaurants = Restaurant.;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFfff7dd),
-        elevation: 0.0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: IconButton(
-              icon: const Icon(Icons.search, color: Colors.black),
-              onPressed: () {
-                showSearch(context: context, delegate: SearchBarDelegate());
-              },
+      backgroundColor: const Color(0xFFFFF7DD),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 50,
+          ),
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(15, 16, 8, 0),
+              child: Text('Restaurants',
+                  style: TextStyle(
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(254, 194, 43, 1))),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(
-              radius: 20.0, // adjust the radius according to your preference
-              backgroundImage: const AssetImage('assets/images/profile.png'),
-              child: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/profile.png'),
-                    fit: BoxFit.cover,
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+              height: 200,
+              margin: const EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.symmetric(vertical: 0),
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) => GestureDetector(
+                  child: Container(
+                    height: 100,
+                    width: 240,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        restaurants[index]['imageUrl'],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
-                child: GestureDetector(
+                itemCount: restaurants.length,
+                separatorBuilder: (BuildContext context, int index) {
+                  return const SizedBox(
+                    width: 10,
+                  );
+                },
+              )),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(15, 16, 8, 0),
+            child: Text('Popular',
+                style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(254, 194, 43, 1))),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: restaurants.length,
+              itemBuilder: (BuildContext context, int index) {
+                final restaurant = restaurants[index];
+
+                return GestureDetector(
                   onTap: () {
-                    // do something when the image is tapped
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const UserProfilePage()));
+                            builder: (context) => RestaurantDetail(
+                                  restId: restaurant['name'],
+                                )));
                   },
-                ),
-              ),
+                  child: Card(
+                    margin: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                    color: Colors.white,
+                    elevation: 8.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                restaurant['imageUrl'],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(restaurant['name'],
+                                  style: const TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold)),
+                              Text(
+                                restaurant['label'],
+                                style: const TextStyle(fontSize: 14.0),
+                              )
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        Container(
+                          margin: const EdgeInsets.only(right: 10.0),
+                          child: const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],
-      ),
-      body: Container(
-        color: const Color(0xFFFFF7DD),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text('Choose the\nFood You Love',
-                    style: TextStyle(
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(254, 194, 43, 1))),
-              ),
-              CarouselSlider(
-                items: _items,
-                options: CarouselOptions(
-                  height: 40.0,
-                  aspectRatio: 16 / 9,
-                  viewportFraction: 0.3,
-                  initialPage: 0,
-                  enableInfiniteScroll: true,
-                  reverse: false,
-                  // autoPlay: true,
-                  autoPlayInterval: const Duration(seconds: 3),
-                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enlargeCenterPage: true,
-                  // onPageChanged: (index, reason) {
-                  //   setState(() {
-                  //     _current = index;
-                  //   });
-                  // },
-                  scrollDirection: Axis.horizontal,
-                ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Card(
-                color: Colors.white,
-                elevation: 8.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Image(
-                        image: AssetImage('assets/images/orderImage.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(40.0, 8.0, 0.0, 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text('Divine',
-                              style: TextStyle(
-                                  fontSize: 18.0, fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                color: Colors.white,
-                elevation: 8.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Image(
-                        image: AssetImage('assets/images/orderImage.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(40.0, 8.0, 0.0, 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text('Dyners',
-                              style: TextStyle(
-                                  fontSize: 18.0, fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                color: Colors.white,
-                elevation: 8.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Image(
-                        image: AssetImage('assets/images/orderImage.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(40.0, 8.0, 0.0, 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text('Meze Fresh',
-                              style: TextStyle(
-                                  fontSize: 18.0, fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                color: Colors.white,
-                elevation: 8.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Image(
-                        image: AssetImage('assets/images/orderImage.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(40.0, 8.0, 0.0, 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text('Scholars Cafe',
-                              style: TextStyle(
-                                  fontSize: 18.0, fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Card(
-                color: Colors.white,
-                elevation: 8.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Image(
-                        image: AssetImage('assets/images/orderImage.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(40.0, 8.0, 0.0, 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text('Mojito',
-                              style: TextStyle(
-                                  fontSize: 18.0, fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (int index) {
@@ -315,7 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
               break;
             case 1:
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MyOrderPage()));
+                  MaterialPageRoute(builder: (context) => const CartPage()));
               break;
           }
         },

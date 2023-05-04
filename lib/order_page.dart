@@ -500,7 +500,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
           switch (index) {
             case 0:
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MyHomePage()));
+                  MaterialPageRoute(builder: (context) => MyHomePage()));
               break;
             case 3:
               Navigator.push(

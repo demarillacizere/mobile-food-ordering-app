@@ -33,32 +33,28 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
-  // int _selectedIndex = 0;
-  // final FirebaseAuth auth = FirebaseAuth.instance;
-  // final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String? _firstName;
+  String? _lastName;
+  String? _email;
+  String? fullName;
 
-  // String firstname = '';
-  // String email = '';
-  // String phoneNumber = '';
+  Future<void> _getUserData() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    final userData =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    setState(() {
+      _firstName = userData.get('firstName');
+      _lastName = userData.get('secondName');
+      _email = userData.get('email');
+      fullName = '${_firstName ?? "User Name"} ${_lastName ?? "Last Name"}';
+    });
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _getUserData();
-  // }
-
-  // void _getUserData() async {
-  //   final User? user = auth.currentUser;
-  //   final DocumentSnapshot snapshot =
-  //       await firestore.collection('users').doc(user?.uid).get();
-
-  //   setState(() {
-  //     firstname = snapshot['firstName'];
-  //     email = snapshot['email'];
-  //     // phoneNumber = snapshot['phone_number'];
-  //   });
-  // }
-
+  @override
+  void initState() {
+    super.initState();
+    _getUserData();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +63,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MyHomePage()),
+                MaterialPageRoute(builder: (context) =>  MyHomePage()),
               );
             },
             backgroundColor: Colors.yellow,
@@ -82,8 +78,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
         // ),
         body: SingleChildScrollView(
           child: Column(
-            children: const [
-              SizedBox(height: 20),
+            children:  [
+              SizedBox(height: 60),
               CircleAvatar(
                 radius: 60,
                 backgroundImage: AssetImage('assets/images/profile.png'),
@@ -92,13 +88,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 height: 10,
               ),
               Text(
-                'Username',
+                fullName ?? "User Name",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 5),
               Text(
-                'user@example.com',
-                style: TextStyle(fontSize: 18),
+                _email ?? 'user@example.com',
+                style: const TextStyle(fontSize: 18),
               ),
               SizedBox(
                 height: 50,
@@ -118,7 +114,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 ),
                 subtitle: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
-                  child: Text('John Doe'),
+                  child: Text(fullName ?? "User Name",),
                 ),
               ),
               ListTile(
@@ -132,7 +128,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 ),
                 subtitle: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
-                  child: Text('user@example.com'),
+                  child: Text(_email ?? 'user@example.com'),
                 ),
               ),
               ListTile(
@@ -171,7 +167,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             switch (index) {
               case 0:
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const HomePage()));
+                    MaterialPageRoute(builder: (context) => MyHomePage()));
                 break;
               case 3:
                 Navigator.push(
