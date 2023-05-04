@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../../../models/food.dart';
@@ -41,32 +42,39 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
       final String itemName = widget.food;
       final double itemPrice = double.parse(widget.price);
       final int itemQuantity = _count;
-      final FirebaseFirestore firestore = FirebaseFirestore.instance;
-      firestore.collection("cart").add({
-        "restaurant": widget.restaurant,
-        "imageUrl": itemImage,
-        "name": itemName,
-        "price": itemPrice,
-        "quantity": itemQuantity
-      }).then((_) {
+
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+
+      final User? user = _auth.currentUser!;
+      // final _uid = user.uid;
+      if (user != null) {
+        final FirebaseFirestore firestore = FirebaseFirestore.instance;
+        firestore.collection("users").doc(user.uid).collection("cart").add({
+          "restaurant": widget.restaurant,
+          "imageUrl": itemImage,
+          "name": itemName,
+          "price": itemPrice,
+          "quantity": itemQuantity
+        }).then((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Item added to cart'),
+            ),
+          );
+        }).catchError((error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to add item to cart: $error'),
+            ),
+          );
+        });
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Item added to cart'),
+            content: Text('Please select quantity'),
           ),
         );
-      }).catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to add item to cart: $error'),
-          ),
-        );
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select quantity'),
-        ),
-      );
+      }
     }
   }
 
