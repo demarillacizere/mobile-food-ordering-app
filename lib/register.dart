@@ -22,8 +22,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isHidden = true;
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _secondNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
@@ -33,37 +33,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
-  void _submitForm() {}
+  void _submitForm() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    // final isValid = _formKey.currentState!.validate();
+    // if (isValid) {
+    //   try {
+    await _auth.createUserWithEmailAndPassword(
+        email: _emailTextController.text.trim(),
+        password: _passwordTextController.text.trim());
 
-  @override
-  Future signUp() async {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim());
-    addUserDetails(
-      _firstNameController.text.trim(),
-      _secondNameController.text.trim(),
-      _emailController.text.trim(),
-      _passwordController.text.trim(),
-    );
-  }
-
-  Future addUserDetails(String firstName, String secondName, String email,
-      String password) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'firstName': firstName,
-      'secondName': secondName,
-      'email': email,
-      'password': password,
+    final User user = _auth.currentUser!;
+    final _uid = user.uid;
+    await FirebaseFirestore.instance.collection('users').doc(_uid).set({
+      'uid': _uid,
+      'firstName': _firstNameController.text.trim(),
+      'secondName': _secondNameController.text.trim(),
+      'email': _emailTextController.text.trim(),
+      'password': _passwordTextController.text.trim(),
     });
+    // }
+    // catch (e) {
+    //   print(e);
+    // }
+    // }
   }
+
+  // @override
+  // Future signUp() async {
+  //   await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email: _emailController.text.trim(),
+  //       password: _passwordController.text.trim());
+  //   addUserDetails(
+  //     _firstNameController.text.trim(),
+  //     _secondNameController.text.trim(),
+  //     _emailController.text.trim(),
+  //     _passwordController.text.trim(),
+  //   );
+  // }
+
+  // Future addUserDetails(String firstName, String secondName, String email,
+  //     String password) async {
+  //   await FirebaseFirestore.instance.collection('users').add({
+  //     'firstName': firstName,
+  //     'secondName': secondName,
+  //     'email': email,
+  //     'password': password,
+  //   });
+  // }
 
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            backgroundColor: const Color(0xFFFFF7DD),
-            foregroundColor: Colors.black,
-            elevation: 0.0),
+        backgroundColor: const Color(0xFFFFF7DD),
+        // appBar: AppBar(
+        //     backgroundColor: const Color(0xFFFFF7DD),
+        //     foregroundColor: Colors.black,
+        //     elevation: 0.0),
         body: SingleChildScrollView(
             child: ConstrainedBox(
                 constraints: BoxConstraints(
@@ -99,6 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               SizedBox(
                                 width: 310,
                                 child: TextField(
+                                  key: ValueKey('firstNameField'),
                                   controller: _firstNameController,
                                   decoration: const InputDecoration(
                                     hintText: 'Enter first name',
@@ -114,6 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               SizedBox(
                                 width: 310,
                                 child: TextField(
+                                  key: ValueKey('SecondNameField'),
                                   controller: _secondNameController,
                                   decoration: const InputDecoration(
                                     hintText: 'Enter second name',
@@ -129,7 +155,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               SizedBox(
                                 width: 310,
                                 child: TextField(
-                                  controller: _emailController,
+                                  key: ValueKey('EmailField'),
+                                  controller: _emailTextController,
                                   decoration: const InputDecoration(
                                     hintText: 'Enter your email',
                                     border: OutlineInputBorder(
@@ -144,7 +171,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               SizedBox(
                                 width: 310,
                                 child: TextField(
-                                  controller: _passwordController,
+                                  key: ValueKey('Password'),
+                                  controller: _passwordTextController,
                                   decoration: InputDecoration(
                                     hintText: 'Enter your password',
                                     border: const OutlineInputBorder(
@@ -166,6 +194,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               SizedBox(
                                 width: 310,
                                 child: TextField(
+                                  key: ValueKey('ConfirmPassword'),
                                   controller: _confirmPasswordController,
                                   decoration: InputDecoration(
                                     hintText: 'Confirm your password',
@@ -188,12 +217,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               Container(
                                   child: ElevatedButton(
                                 onPressed: () {
-                                  signUp();
+                                  _submitForm();
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              MyHomePage()));
+                                          builder: (context) => MyHomePage()));
                                 },
                                 style: ButtonStyle(
                                   minimumSize: MaterialStateProperty.all<Size>(

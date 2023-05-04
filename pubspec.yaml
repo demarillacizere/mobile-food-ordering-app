@@ -41,6 +41,7 @@ dependencies:
   shared_preferences: ^2.1.0
   firebase_database: ^10.1.1
   flutter_local_notifications: ^8.0.0
+  mockito: ^5.4.0
 
 dev_dependencies:
   flutter_test:

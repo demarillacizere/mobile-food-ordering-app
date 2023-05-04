@@ -22,11 +22,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFFFF7DD),
-        foregroundColor: Colors.black,
-        elevation: 0.0,
-      ),
+      backgroundColor: const Color(0xFFFFF7DD),
+      // appBar: AppBar(
+      //   backgroundColor: const Color(0xFFFFF7DD),
+      //   foregroundColor: Colors.black,
+      //   elevation: 0.0,
+      // ),
       body: FutureBuilder(
         future: _initializeFirebase(),
         builder: (context, snapshot) {
@@ -134,7 +135,8 @@ class _LoginBodyState extends State<LoginBody> {
                           const SizedBox(height: 20.0),
                           SizedBox(
                             width: 310,
-                            child: TextField(
+                            child: TextFormField(
+                              key: ValueKey("Password"),
                               keyboardType: TextInputType.visiblePassword,
                               controller: _passwordController,
                               decoration: InputDecoration(
@@ -170,6 +172,7 @@ class _LoginBodyState extends State<LoginBody> {
                           ),
                           const SizedBox(height: 20.0),
                           ElevatedButton(
+                            key: const ValueKey("Login"),
                             onPressed: () async {
                               User? user = await loginUsingEmailPassword(
                                   email: _emailController.text,
@@ -179,8 +182,7 @@ class _LoginBodyState extends State<LoginBody> {
                               if (user != null) {
                                 Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                             MyHomePage()));
+                                        builder: (context) => MyHomePage()));
                               }
                             },
                             style: ButtonStyle(

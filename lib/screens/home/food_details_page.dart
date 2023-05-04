@@ -11,6 +11,7 @@ import '../../settings.dart';
 import '../../widgets/custom_app_bar.dart';
 
 class FoodDetailsPage extends StatefulWidget {
+  final String restaurant;
   final String imageUrl;
   final String food;
   final String price;
@@ -19,6 +20,7 @@ class FoodDetailsPage extends StatefulWidget {
 
   const FoodDetailsPage({
     Key? key,
+    required this.restaurant,
     required this.imageUrl,
     required this.food,
     required this.floatingActionButton,
@@ -36,6 +38,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
 
   void addToCart() {
     if (_count > 0) {
+      final String restaurant = widget.restaurant;
       final String itemImage = widget.imageUrl;
       final String itemName = widget.food;
       final double itemPrice = double.parse(widget.price);

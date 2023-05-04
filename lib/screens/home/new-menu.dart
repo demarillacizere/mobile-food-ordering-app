@@ -24,7 +24,7 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
   String? restName;
   String? restLabel;
   String? restMenu;
-  // int? restScore;
+  String? restScore;
 
   getData() async {
     DocumentSnapshot restData = await FirebaseFirestore.instance
@@ -35,7 +35,7 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
     setState(() {
       restName = restData.get('name');
       restLabel = restData.get('label');
-      // restScore = restData.get('score');
+      restScore = restData.get('score');
     });
   }
 
@@ -45,6 +45,14 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
 
     super.initState();
   }
+
+  List<String> imageUrls = [
+    'https://images.unsplash.com/photo-1562059390-a761a084768e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=819&q=80',
+    'https://images.unsplash.com/photo-1551024709-8f23befc6f87?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=957&q=80',
+    'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8YnVycml0b3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+    'https://images.unsplash.com/photo-1563227812-0ea4c22e6cc8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
+    // add more image URLs here
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +80,35 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
             restaurant: widget.restId,
             score: '3',
           ),
+          Container(
+              height: 200,
+              margin: EdgeInsets.only(left: 16),
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) => GestureDetector(
+                  child: Container(
+                    height: 100,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        imageUrls[index],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                itemCount: imageUrls.length,
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    width: 10,
+                  );
+                },
+              )),
           FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance
                 .collection('restaurant')
@@ -88,6 +125,7 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => FoodDetailsPage(
+                                  restaurant: snapshot.data!['name'],
                                   food: snapshot.data!['menu2'][index]['name'],
                                   floatingActionButton:
                                       CartFloatingActionButton(

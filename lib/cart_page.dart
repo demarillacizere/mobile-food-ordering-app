@@ -51,15 +51,6 @@ class _CartPageState extends State<CartPage> {
 // fetch the documents in the collection
 
   void placeOrder() async {
-    // final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    // await firestore.collection("cart").get().then((querySnapshot) {
-    //   querySnapshot.docs.forEach((doc) {
-    //     doc.reference.delete();
-    //   });
-    // });
-    // setState(() {
-    //   restaurants.clear();
-    // });
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Order has been placed!'),
