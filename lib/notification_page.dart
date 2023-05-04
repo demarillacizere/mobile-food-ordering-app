@@ -55,6 +55,7 @@ class _NotificationPageState extends State<NotificationPage> {
         .collection('users')
         .doc(currentUserId)
         .collection('notifications')
+        .orderBy('timestamp',descending: true)
         .snapshots();
   }
 
@@ -120,27 +121,16 @@ class _NotificationPageState extends State<NotificationPage> {
               return Column(
                 children: [
                   const SizedBox(height: 10),
-                  // CustomAppBar(
-                  //   Icons.arrow_back_ios_new_outlined,
-                  //   Icons.notifications,
-                  //   () => Navigator.pop(context),
-                  //   itemBuilder: (context, index) {
-                  //     return const Card(
-                  //       margin: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                  //       child: CircleAvatar(
-                  //         radius: 20,
-                  //         backgroundImage:
-                  //             AssetImage('assets/images/profile.png'),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
+                  
                   const Text(
                     'Notifications',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
+                  ),
+                  const SizedBox(
+                    height: 40,
                   ),
                   Expanded(
                     child: ListView.builder(
@@ -171,6 +161,11 @@ class _NotificationPageState extends State<NotificationPage> {
                                     //   notification['imageUrl'],
                                     //   fit: BoxFit.cover,
                                     // ),
+                                    child:Image.asset(
+                                      'assets/images/home_icon.png',
+                                      width: 330,
+                                      height: 252,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -180,20 +175,36 @@ class _NotificationPageState extends State<NotificationPage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
                                     Text(notification['title'],
                                         style: const TextStyle(
                                             fontSize: 18.0,
                                             fontWeight: FontWeight.bold)),
-                                    Text(
-                                      " ${notification['body']}",
-                                      style: const TextStyle(fontSize: 14.0),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Container(
+                                      width:270,
+                                      child: 
+                                        Text(
+                                          " ${notification['body']}",
+                                          style: const TextStyle(fontSize: 14.0),
+                                        ),
+                                      
                                     ),
                                     
-                                    
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
                                     Text(
                                           "${DateFormat.Hm().format(notification['timestamp'].toDate())}",
                                           style: const TextStyle(fontSize: 14.0),
-                                        )
+                                        ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
 
                                   ],
                                 ),

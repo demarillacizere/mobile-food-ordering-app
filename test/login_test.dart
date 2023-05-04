@@ -15,32 +15,11 @@ void main() {
       await tester.pumpWidget(const MaterialApp(home: LoginScreen()));
 
       expect(find.byType(AppBar), findsNothing);
-      // final passwordInputElement = find.byKey(const ValueKey('Password'));
-      // expect(passwordInputElement, findsOneWidget);
-      // final welcomeText = find.text('Welcome Back\nLog into account');
-      // expect(welcomeText, findsOneWidget);
-      // final loginButton = find.byType(ElevatedButton);
-      // expect(loginButton, findsOneWidget);
-
-      //Enter some text into the email and password fields
-      // final emailField = find.byType(TextField).first;
-      // expect(emailField, findsOneWidget);
-      // final passwordField = find.byKey(ValueKey('Password'));
-      // expect(passwordField, findsOneWidget);
-
-      // await tester.enterText(emailField, 'test@example.com');
-      // await tester.enterText(passwordField, 'password');
-
-      // // Tap the login button
-      // final loginButton = find.byType(ElevatedButton).first;
-      // await tester.tap(loginButton);
-
-      // // Wait for the navigation to complete
-      // await tester.pumpAndSettle();
-
-      // // Check if we have landed on the home page
-      // final homePageTitle = find.text('Home Page');
-      // expect(homePageTitle, findsOneWidget);
+      final passwordInputElement = find.byKey(const ValueKey('Password'));
+      expect(passwordInputElement, findsOneWidget);
+      final welcomeText = find.text('Welcome Back\nLog into account');
+      expect(welcomeText, findsOneWidget);
+      
     });
   });
 }

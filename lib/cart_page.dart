@@ -61,41 +61,74 @@ class _CartPageState extends State<CartPage> {
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  Future<void> showNotification() async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'your channel id',
-      'your channel name',
-      'your channel description',
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-    );
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      'Chap Chap Food',
-      'Your order has been sent!',
-      platformChannelSpecifics,
-    );
+Future<void> showNotification() async {
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
+    'your channel id',
+    'your channel name',
+    'your channel description',
+    importance: Importance.max,
+    priority: Priority.high,
+    ticker: 'ticker',
+  );
+  const NotificationDetails platformChannelSpecifics =
+      NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    // Get the current user ID
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final User? user = auth.currentUser;
-    final String userId = user!.uid;
+  // Get the current user ID
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final User? user = auth.currentUser;
+  final String userId = user!.uid;
 
-    // Save the notification to Firestore
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .collection('notifications')
-        .add({
-      'title': 'Order has been sent',
-      'body': 'Your order has been sent!',
-      'timestamp': FieldValue.serverTimestamp(),
-    });
-  }
+  // Retrieve the cart items from Firestore
+  final QuerySnapshot<Map<String, dynamic>> cartSnapshot =
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('cart')
+          .get();
+
+  // Create a list of order items with the quantity, item name, and restaurant name
+  final List<String> orderItems = cartSnapshot.docs.map((DocumentSnapshot<Map<String, dynamic>> doc) {
+    final Map<String, dynamic> data = doc.data()!;
+    final String name = data['name'];
+    final int quantity = data['quantity'];
+    return '$quantity x $name';
+  }).toList();
+
+  // Create the notification body
+  final String body = 'Your order of ${orderItems.join(', ')} has been sent!';
+
+  // Show the notification
+  await flutterLocalNotificationsPlugin.show(
+    0,
+    'Chap Chap Food',
+    body,
+    platformChannelSpecifics,
+  );
+
+  // Save the notification to Firestore
+  final DocumentReference<Map<String, dynamic>> notificationRef =
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('notifications')
+          .add({
+    'title': 'Order has been sent',
+    'body': body,
+    'timestamp': FieldValue.serverTimestamp(),
+  });
+
+  // Remove all documents in the cart collection
+  final WriteBatch batch = FirebaseFirestore.instance.batch();
+  cartSnapshot.docs.forEach((DocumentSnapshot<Map<String, dynamic>> doc) {
+    batch.delete(doc.reference);
+  });
+  await batch.commit();
+
+  // Log the notification ID
+  print('Notification ID: ${notificationRef.id}');
+}
+
 
   Future<void> showSecondNotification() async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =

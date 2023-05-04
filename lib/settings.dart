@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:food_app/order_page.dart';
 import 'cart_page.dart';
@@ -38,26 +43,49 @@ class AccountSettingPage extends StatefulWidget {
 
 class _AccountSettingPageState extends State<AccountSettingPage> {
   int _selectedIndex = 1;
+  String? _firstName;
+  String? _lastName;
+  String? _email;
+  String? fullName;
+
+  Future<void> _getUserData() async {
+    final userId = FirebaseAuth.instance.currentUser!.uid;
+    final userData =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    setState(() {
+      _firstName = userData.get('firstName');
+      _lastName = userData.get('secondName');
+      _email = userData.get('email');
+      fullName = '${_firstName ?? "User Name"} ${_lastName ?? "Last Name"}';
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFFFFF7DD),
         body: SingleChildScrollView(
           child: Column(
-            children: const [
+            children: [
               SizedBox(height: 70),
               CircleAvatar(
                 radius: 60,
                 backgroundImage: AssetImage('assets/images/profile.png'),
               ),
-              
+
               Text(
-                'Username',
+                fullName ?? "User Name",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 5),
               Text(
-                'user@example.com',
+                _email ?? 'user@example.com',
                 style: TextStyle(fontSize: 18),
               ),
               SizedBox(
@@ -218,14 +246,12 @@ class _AccountSettingPageState extends State<AccountSettingPage> {
           onTap: (int index) {
             switch (index) {
               case 0:
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyHomePage()));
-              break;
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyHomePage()));
+                break;
               case 1:
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>  CartPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CartPage()));
                 break;
               case 2:
                 Navigator.push(
@@ -246,7 +272,7 @@ class _AccountSettingPageState extends State<AccountSettingPage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications, color: Colors.black),
-              label: 'Notifications', 
+              label: 'Notifications',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings, color: Colors.black),

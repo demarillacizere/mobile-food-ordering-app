@@ -234,9 +234,13 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
                   },
                 );
               } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return Center(
+                    child: Column(
+                  children: const [
+                    Icon(Icons.hourglass_empty_rounded),
+                    Text('No food available'),
+                  ],
+                ));
               }
             }),
           ),
