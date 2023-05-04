@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../../../models/food.dart';
@@ -39,7 +41,16 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
       final double itemPrice = double.parse(widget.price);
       final int itemQuantity = _count;
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
-      firestore.collection("cart").add({
+
+      // Get the current user ID
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final User? user = auth.currentUser;
+      final String userId = user!.uid;
+
+      FirebaseFirestore.instance
+      .collection('users')
+      .doc(userId)
+      .collection("cart").add({
         "imageUrl": itemImage,
         "name": itemName,
         "price": itemPrice,
@@ -237,9 +248,11 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
         //   });
         // },
       ),
-      floatingActionButton:
-          CartFloatingActionButton(onPressed: () => addToCart()),
-    );
+      floatingActionButton: CartFloatingActionButton(
+  onPressed: () {
+    addToCart();
+  },
+));
   }
 }
 
@@ -256,7 +269,7 @@ class CartFloatingActionButton extends StatelessWidget {
     return SizedBox(
       width: 150,
       child: FloatingActionButton.extended(
-        label: const Text('Place Order'),
+        label: const Text('Add to Cart'),
         icon: const Icon(Icons.start_outlined),
         onPressed: onPressed,
         backgroundColor: Color.fromRGBO(254, 194, 43, 1),
