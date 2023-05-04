@@ -24,7 +24,7 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
   String? restName;
   String? restLabel;
   String? restMenu;
-  String? restScore;
+  // int? restScore;
 
   getData() async {
     DocumentSnapshot restData = await FirebaseFirestore.instance
@@ -35,7 +35,7 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
     setState(() {
       restName = restData.get('name');
       restLabel = restData.get('label');
-      restScore = restData.get('score');
+      // restScore = restData.get('score');
     });
   }
 

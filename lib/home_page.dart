@@ -353,27 +353,60 @@ class _MyHomePageState extends State<MyHomePage> {
           // ),
           const Padding(
             padding: EdgeInsets.fromLTRB(15, 16, 8, 0),
-            child: Text('Choose the\nFood You Love',
+            child: Text('Polular Restaurants',
                 style: TextStyle(
                     fontSize: 30.0,
                     fontWeight: FontWeight.bold,
                     color: Color.fromRGBO(254, 194, 43, 1))),
           ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+              height: 200,
+              margin: EdgeInsets.only(left: 16),
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) => GestureDetector(
+                  child: Container(
+                    height: 100,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        restaurants[index]['imageUrl'],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                itemCount: restaurants.length,
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    width: 10,
+                  );
+                },
+              )),
+
           Expanded(
             child: ListView.builder(
               itemCount: restaurants.length,
               itemBuilder: (BuildContext context, int index) {
                 final restaurant = restaurants[index];
-                
+
                 return GestureDetector(
                   onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RestaurantDetail(
-                                    restId: restaurant['name'],
-                                  )));
-                    },
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RestaurantDetail(
+                                  restId: restaurant['name'],
+                                )));
+                  },
                   child: Card(
                     margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
                     color: Colors.white,
@@ -384,24 +417,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Row(
                       children: [
                         Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                height: 60,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    restaurant['imageUrl'],
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                restaurant['imageUrl'],
+                                fit: BoxFit.cover,
                               ),
                             ),
+                          ),
+                        ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
