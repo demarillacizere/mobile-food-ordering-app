@@ -155,18 +155,7 @@ class _NotificationPageState extends State<NotificationPage> {
                     ),
                   ),
                   const SizedBox(width: 10.0),
-                  Container(
-                    width: 110,
-                    color: const Color.fromARGB(255, 241, 241, 241),
-                    child: const Padding(
-                      padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                      child: Center(
-                        child: Text('Cart',
-                            style: TextStyle(
-                                fontSize: 10.0, fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                  ),
+                 
                   const SizedBox(width: 10.0),
                   Container(
                     width: 110,

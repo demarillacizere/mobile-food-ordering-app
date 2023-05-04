@@ -89,6 +89,7 @@ class _CartPageState extends State<CartPage> {
             style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(254, 194, 43, 1),
             ),
           ),
           Expanded(

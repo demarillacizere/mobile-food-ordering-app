@@ -9,6 +9,7 @@ import '../../settings.dart';
 import '../../widgets/custom_app_bar.dart';
 
 class FoodDetailsPage extends StatefulWidget {
+  final String restaurant;
   final String imageUrl;
   final String food;
   final String price;
@@ -17,6 +18,7 @@ class FoodDetailsPage extends StatefulWidget {
 
   const FoodDetailsPage({
     Key? key,
+    required this.restaurant,
     required this.imageUrl,
     required this.food,
     required this.floatingActionButton,
@@ -34,12 +36,14 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
 
   void addToCart() {
     if (_count > 0) {
+      final String restaurant = widget.restaurant;
       final String itemImage = widget.imageUrl;
       final String itemName = widget.food;
       final double itemPrice = double.parse(widget.price);
       final int itemQuantity = _count;
       final FirebaseFirestore firestore = FirebaseFirestore.instance;
       firestore.collection("cart").add({
+        "restaurant": widget.restaurant,
         "imageUrl": itemImage,
         "name": itemName,
         "price": itemPrice,
@@ -123,6 +127,11 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                     'Price: ${widget.price} Rwf',
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'From: ${widget.restaurant}',
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
                   const SizedBox(height: 26),
                   Text(
                     'Quantity',
@@ -179,18 +188,19 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              Text(
-                'Description',
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              Text(
-                widget.description,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-            ],
-          ),)
-        ],),
-      
+                Text(
+                  'Description',
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                Text(
+                  widget.description,
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (int index) {
           switch (index) {
