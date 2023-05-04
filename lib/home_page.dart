@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(
                       fontSize: 30.0,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(254, 194, 43, 1))),
+                      color: Color.fromARGB(255, 254, 162, 25))),
             ),
           ),
           const SizedBox(
@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(254, 194, 43, 1))),
+                    color: Color.fromARGB(255, 254, 162, 25))),
           ),
           Expanded(
             child: ListView.builder(
