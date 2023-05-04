@@ -113,10 +113,16 @@ class _NotificationPageState extends State<NotificationPage> {
               final notifications = snapshot.data!.docs;
 
               if (notifications.isEmpty) {
-                return const Center(
-                  child: Text('You have no notifications.'),
-                );
-              }
+              return const Center(
+                child: Text(
+                  'You have no notifications.',
+                  style: TextStyle(
+                    fontSize: 20.0, // set the font size to 20
+                    fontWeight: FontWeight.bold, // set the font weight to bold
+                  ),
+                ),
+              );
+            }
 
               return Column(
                 children: [
@@ -186,7 +192,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                       height: 10,
                                     ),
                                     Container(
-                                      width:270,
+                                      width:250,
                                       child: 
                                         Text(
                                           " ${notification['body']}",

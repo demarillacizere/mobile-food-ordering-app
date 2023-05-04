@@ -171,6 +171,22 @@ Future<void> showNotification() async {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFFFFF7DD),
+        appBar:AppBar(
+        backgroundColor: const Color(0xFFfff7dd),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back), color: Colors.black,
+          onPressed: () {
+          Navigator.pop(context); // navigate to the previous page
+        },
+        ),
+        title: const Text(
+        'Chap Chap Food',
+        style: TextStyle(
+        color: Color.fromARGB(255, 254, 162, 25),
+        ),
+        ),
+        
+      ),
         body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: _cartStream,
             builder: (context, snapshot) {
@@ -181,10 +197,16 @@ Future<void> showNotification() async {
               final orders = snapshot.data!.docs;
 
               if (orders.isEmpty) {
-                return const Center(
-                  child: Text('You have no items in the  cart.'),
-                );
-              }
+              return const Center(
+                child: Text(
+                  'Your cart is empty',
+                  style: TextStyle(
+                    fontSize: 20.0, // set the font size to 20
+                    fontWeight: FontWeight.bold, // set the font weight to bold
+                  ),
+                ),
+              );
+            }
 
               return Column(
                 children: [
