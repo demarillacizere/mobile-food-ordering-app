@@ -10,6 +10,11 @@ Chap Chap Food App
 
 ## Link to the Figma Design
  * https://www.figma.com/file/vRBfLz2R0sZigqDL2lPD9U/Mobile-Dev-Food-App?node-id=0%3A1&t=Ck1mELZOuFs5gysE-1
+
+## Link to the Deployed App
+
+Note: It runs only on Android.
+ https://appdistribution.firebase.google.com/testerapps/1:253746294424:android:685e589077e3a276046aed/releases/4hidoqgta0q18?utm_source=firebase-console
 ## Authors
 
 Group 5:
