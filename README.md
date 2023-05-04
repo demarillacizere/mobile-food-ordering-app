@@ -2,6 +2,8 @@
 
 Chap Chap Food App
 
+## Link to Video Recording Presentation
+ * https://drive.google.com/file/d/1qSrIAWg0J9w2qhsq0-khWXVMLB401VLK/view?usp=share_link 
 ## Authors
 
 Group 5:
