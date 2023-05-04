@@ -24,7 +24,7 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
   String? restName;
   String? restLabel;
   String? restMenu;
-  String? restScore;
+  // int? restScore;
 
   getData() async {
     DocumentSnapshot restData = await FirebaseFirestore.instance
@@ -35,7 +35,7 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
     setState(() {
       restName = restData.get('name');
       restLabel = restData.get('label');
-      restScore = restData.get('score');
+      // restScore = restData.get('score');
     });
   }
 
@@ -79,7 +79,7 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
                 .get(),
             builder: ((context, snapshot) {
               if (snapshot.hasData) {
-                return ListView.separated(
+                return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: snapshot.data!['menu2'].length,
@@ -91,60 +91,107 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
                                   food: snapshot.data!['menu2'][index]['name'],
                                   floatingActionButton:
                                       CartFloatingActionButton(
-                                          onPressed: () => CartPage(
-                                               
-                                              )),
+                                          onPressed: () => CartPage()),
                                   description: snapshot.data!['menu2'][index]
                                       ['description'],
                                   price: snapshot.data!['menu2'][index]
                                       ['price'],
+                                  imageUrl: snapshot.data!['menu2'][index]
+                                      ['imageUrl'],
                                 )));
                       },
-                      child: ListTile(
-                        leading: Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              snapshot.data!['menu2'][index]['imageUrl'],
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                      // child: ListTile(
+                      //   leading: Container(
+                      //     height: 60,
+                      //     width: 60,
+                      //     decoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(10),
+                      //     ),
+                      //     child: ClipRRect(
+                      //       borderRadius: BorderRadius.circular(10),
+                      //       child: Image.network(
+                      //         snapshot.data!['menu2'][index]['imageUrl'],
+                      //         fit: BoxFit.cover,
+                      //       ),
+                      //     ),
+                      //   ),
+                      //   title: Text(snapshot.data!['menu2'][index]['name']),
+                      //   subtitle:
+                      //       Text(snapshot.data!['menu2'][index]['description']),
+                      //   // trailing: Container(
+                      //   //   height: 60,
+                      //   //   width: 60,
+                      //   //   child: Row(
+                      //   //     mainAxisAlignment: MainAxisAlignment.end,
+                      //   //     children: [
+                      //   //       IconButton(
+                      //   //           onPressed: () {},
+                      //   //           icon: Icon(
+                      //   //             Icons.add_circle_rounded,
+                      //   //             color: Colors.yellow,
+                      //   //           )),
+                      //   //       IconButton(
+                      //   //           onPressed: () {},
+                      //   //           icon: Icon(Icons.remove_circle_rounded,
+                      //   //               color: Colors.yellow)),
+                      //   //     ],
+                      //   //   ),
+                      //   // ),
+                      // ),
+                      child: Card(
+                        margin: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                        color: Colors.white,
+                        elevation: 8.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        title: Text(snapshot.data!['menu2'][index]['name']),
-                        subtitle:
-                            Text(snapshot.data!['menu2'][index]['description']),
-                        // trailing: Container(
-                        //   height: 60,
-                        //   width: 60,
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.end,
-                        //     children: [
-                        //       IconButton(
-                        //           onPressed: () {},
-                        //           icon: Icon(
-                        //             Icons.add_circle_rounded,
-                        //             color: Colors.yellow,
-                        //           )),
-                        //       IconButton(
-                        //           onPressed: () {},
-                        //           icon: Icon(Icons.remove_circle_rounded,
-                        //               color: Colors.yellow)),
-                        //     ],
-                        //   ),
-                        // ),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    snapshot.data!['menu2'][index]['imageUrl'],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  10.0, 8.0, 0.0, 8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(snapshot.data!['menu2'][index]['name'],
+                                      style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold)),
+                                  Text(
+                                    snapshot.data!['menu2'][index]['price'],
+                                    style: TextStyle(fontSize: 14.0),
+                                  )
+                                ],
+                              ),
+                            ),
+                            const Spacer(),
+                            Container(
+                              margin: const EdgeInsets.only(right: 10.0),
+                              child: const Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.black,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    );
-                    
-                  },
-                  separatorBuilder: (context, index) {
-                    return const Divider(
-                      thickness: 1,
-                      color: Colors.black12,
                     );
                   },
                 );
@@ -158,52 +205,51 @@ class _RestaurantDetailState extends State<RestaurantDetail> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-          onTap: (int index) {
-            switch (index) {
-              case 3:
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AccountSettingPage()));
-                break;
-              case 2:
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NotificationPage()));
-                break;
-              case 1:
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MyHomePage()));
-                break;
-            }
-          },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home, color: Colors.black),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart, color: Colors.black),
-              label: 'Shopping Cart',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications, color: Colors.black),
-              label: 'Notifications',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings, color: Colors.black),
-              label: 'Settings',
-            ),
-          ],
-          // currentIndex: _selectedIndex,
-          // onTap: (index) {
-          //   setState(() {
-          //     _selectedIndex = index;
-          //   });
-          // },
-        ),
-      
+        onTap: (int index) {
+          switch (index) {
+            case 3:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AccountSettingPage()));
+              break;
+            case 2:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NotificationPage()));
+              break;
+            case 1:
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()));
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, color: Colors.black),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart, color: Colors.black),
+            label: 'Shopping Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications, color: Colors.black),
+            label: 'Notifications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings, color: Colors.black),
+            label: 'Settings',
+          ),
+        ],
+        // currentIndex: _selectedIndex,
+        // onTap: (index) {
+        //   setState(() {
+        //     _selectedIndex = index;
+        //   });
+        // },
+      ),
     );
   }
 }

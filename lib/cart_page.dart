@@ -6,10 +6,10 @@ import 'package:food_app/settings.dart';
 import 'package:food_app/widgets/custom_app_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'home_page.dart';
 import 'notification_page.dart';
 
 class CartPage extends StatefulWidget {
-
   const CartPage({Key? key}) : super(key: key);
 
   @override
@@ -39,6 +39,24 @@ class _CartPageState extends State<CartPage> {
     }
   }
 
+  void placeOrder() async {
+    // final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    // await firestore.collection("cart").get().then((querySnapshot) {
+    //   querySnapshot.docs.forEach((doc) {
+    //     doc.reference.delete();
+    //   });
+    // });
+    // setState(() {
+    //   restaurants.clear();
+    // });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Order has been placed!'),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -66,6 +84,13 @@ class _CartPageState extends State<CartPage> {
               );
             },
           ),
+          Text(
+            'Cart',
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: restaurants.length,
@@ -81,13 +106,23 @@ class _CartPageState extends State<CartPage> {
                   ),
                   child: Row(
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Image(
-                          image: AssetImage('assets/images/orderImage.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    restaurant['imageUrl'],
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10.0, 8.0, 0.0, 8.0),
                         child: Column(
@@ -97,8 +132,15 @@ class _CartPageState extends State<CartPage> {
                                 style: TextStyle(
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.bold)),
+                            
                             Text(
-                              restaurant['price'].toString() + " Rwf",
+                              "Quantity: " + restaurant['quantity'].toString(),
+                              style: TextStyle(fontSize: 14.0),
+                            ),
+                            Text(
+                              "Total: " +
+                                  (restaurant['price'] * restaurant['quantity'])
+                                      .toString() + " Rwf",
                               style: TextStyle(fontSize: 14.0),
                             )
                           ],
@@ -112,33 +154,20 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
           // if (_cartData.isNotEmpty)
+
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Card(
-                margin: EdgeInsets.fromLTRB(15, 0, 15, 15),
-                color: Colors.white,
-                elevation: 8.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text("Total: Rwf"),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('Place Order'),
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Color.fromRGBO(254, 194, 43, 1))),
-                      ),
-                    ],
-                  ),
-                ),
+              ElevatedButton(
+                onPressed: () {
+                  placeOrder();
+                },
+                child: Text('Place Order'),
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromRGBO(254, 194, 43, 1))),
               ),
+              SizedBox(width: 15)
             ],
           ),
         ],
@@ -158,9 +187,9 @@ class _CartPageState extends State<CartPage> {
                   MaterialPageRoute(
                       builder: (context) => const NotificationPage()));
               break;
-            case 1:
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => CartPage()));
+            case 0:
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()));
               break;
           }
         },

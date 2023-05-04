@@ -9,6 +9,7 @@ import '../../settings.dart';
 import '../../widgets/custom_app_bar.dart';
 
 class FoodDetailsPage extends StatefulWidget {
+  final String imageUrl;
   final String food;
   final String price;
   final String description;
@@ -16,6 +17,7 @@ class FoodDetailsPage extends StatefulWidget {
 
   const FoodDetailsPage({
     Key? key,
+    required this.imageUrl,
     required this.food,
     required this.floatingActionButton,
     required this.price,
@@ -31,37 +33,38 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
   Map<String, Map<String, dynamic>> foodDetails = {};
 
   void addToCart() {
-  if (_count > 0) {
-    final String itemName = widget.food;
-    final double itemPrice = double.parse(widget.price);
-    final int itemQuantity = _count;
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    firestore.collection("cart").add({
-      "name": itemName,
-      "price": itemPrice,
-      "quantity": itemQuantity
-    }).then((_) {
+    if (_count > 0) {
+      final String itemImage = widget.imageUrl;
+      final String itemName = widget.food;
+      final double itemPrice = double.parse(widget.price);
+      final int itemQuantity = _count;
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+      firestore.collection("cart").add({
+        "imageUrl": itemImage,
+        "name": itemName,
+        "price": itemPrice,
+        "quantity": itemQuantity
+      }).then((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Item added to cart'),
+          ),
+        );
+      }).catchError((error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to add item to cart: $error'),
+          ),
+        );
+      });
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Item added to cart'),
+          content: Text('Please select quantity'),
         ),
       );
-    }).catchError((error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to add item to cart: $error'),
-        ),
-      );
-    });
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Please select quantity'),
-      ),
-    );
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -86,15 +89,20 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
             },
           ),
           Center(
-            child: Container(
-              width: 200, // set the desired width
-              height: 200, // set the desired height
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Image(
-                  image: AssetImage('assets/images/orderImage.png'),
-                  fit:
-                      BoxFit.contain, // make the image fill the available space
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 200,
+                width: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(40),
+                  child: Image.network(
+                    widget.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -104,7 +112,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     widget.food,
@@ -112,101 +120,77 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '${widget.price} Rwf',
+                    'Price: ${widget.price} Rwf',
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 26),
                   Text(
-                    'Description',
+                    'Quantity',
                     style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    widget.description,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  const SizedBox(height: 16),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     IconButton(
-                  //       icon: const Icon(Icons.remove),
-                  //       onPressed: () {
-                  //         setState(() {
-                  //           if (_count <= 0) {
-                  //             _count = 0;
-                  //           } else {
-                  //             _count--;
-                  //           }
-                  //         });
-                  //       },
-                  //     ),
-                  //     const SizedBox(width: 16),
-                  //     Text(
-                  //       _count.toString(),
-                  //       style: Theme.of(context).textTheme.subtitle1,
-                  //     ),
-                  //     const SizedBox(width: 16),
-                  //     IconButton(
-                  //       icon: const Icon(Icons.add),
-                  //       onPressed: () {
-                  //         setState(() {
-                  //           _count++;
-                  //         });
-                  //       },
-                  //     ),
-                  //   ],
-                  // ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 15.0,
-                          backgroundColor: Colors.grey[300],
-                          child: IconButton(
-                            icon: const Icon(Icons.remove,
-                                size: 15.0, color: Colors.black),
-                            onPressed: () {
-                              setState(() {
-                                if (_count <= 0) {
-                                  _count = 0;
-                                } else {
-                                  _count--;
-                                }
-                                // widget.onCountChanged(widget.food.name, _count);
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 10.0),
-                        Text(_count.toString(),
-                            style: TextStyle(fontSize: 18.0)),
-                        const SizedBox(width: 10.0),
-                        CircleAvatar(
-                          radius: 15.0,
-                          backgroundColor: Colors.grey[300],
-                          child: IconButton(
-                            icon: const Icon(Icons.add,
-                                size: 15.0, color: Colors.black),
-                            onPressed: () {
-                              setState(() {
-                                _count++;
-                                // widget.onCountChanged(widget.food.name, _count);
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),
             ),
           ),
-        ],
-      ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 15.0,
+                backgroundColor: Colors.grey[300],
+                child: IconButton(
+                  icon:
+                      const Icon(Icons.remove, size: 15.0, color: Colors.black),
+                  onPressed: () {
+                    setState(() {
+                      if (_count <= 0) {
+                        _count = 0;
+                      } else {
+                        _count--;
+                      }
+                      // widget.onCountChanged(widget.food.name, _count);
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(width: 10.0),
+              Text(_count.toString(), style: TextStyle(fontSize: 18.0)),
+              const SizedBox(width: 10.0),
+              CircleAvatar(
+                radius: 15.0,
+                backgroundColor: Colors.grey[300],
+                child: IconButton(
+                  icon: const Icon(Icons.add, size: 15.0, color: Colors.black),
+                  onPressed: () {
+                    setState(() {
+                      _count++;
+                      // widget.onCountChanged(widget.food.name, _count);
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(15, 30, 15, 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+              Text(
+                'Description',
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              Text(
+                widget.description,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ],
+          ),)
+        ],),
+      
       bottomNavigationBar: BottomNavigationBar(
         onTap: (int index) {
           switch (index) {
@@ -224,11 +208,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
               break;
             case 1:
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CartPage(
-                            
-                          )));
+                  context, MaterialPageRoute(builder: (context) => CartPage()));
               break;
           }
         },

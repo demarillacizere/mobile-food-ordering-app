@@ -42,23 +42,6 @@ class _AccountSettingPageState extends State<AccountSettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFFFFF7DD),
-        // floatingActionButton: FloatingActionButton(
-        //     onPressed: () {
-        //       Navigator.push(
-        //         context,
-        //         MaterialPageRoute(builder: (context) => const MyHomePage()),
-        //       );
-        //     },
-        //     backgroundColor: Colors.yellow,
-        //     child: const Icon(Icons.home)),
-        // appBar: AppBar(
-        //   leading: IconButton(
-        //     icon: const Icon(Icons.arrow_back),
-        //     onPressed: () {
-        //       Navigator.pop(context);
-        //     },
-        //   ),
-        // ),
         body: SingleChildScrollView(
           child: Column(
             children: const [
@@ -263,7 +246,7 @@ class _AccountSettingPageState extends State<AccountSettingPage> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications, color: Colors.black),
-              label: 'Notifications',
+              label: 'Notifications', 
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.settings, color: Colors.black),
