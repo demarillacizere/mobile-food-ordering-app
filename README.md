@@ -1,9 +1,4 @@
-# Project Name
-
-Chap Chap Food App
-
-## Link to Video Recording Presentation
- * https://drive.google.com/file/d/1qSrIAWg0J9w2qhsq0-khWXVMLB401VLK/view?usp=share_link 
+# Chap Chap Food Ordering System
 
 ## Link to the Documentation File
  * https://docs.google.com/document/d/1JuNZ830pS_oeJpM_oyAurnFBe_-phE-aAQJL1vAtTTk/edit 
@@ -16,8 +11,6 @@ Chap Chap Food App
 Note: It runs only on Android.
  https://appdistribution.firebase.google.com/testerapps/1:253746294424:android:685e589077e3a276046aed/releases/4hidoqgta0q18?utm_source=firebase-console
 ## Authors
-
-Group 5:
 
 * Demarillac Izere
 * Irene Busah
